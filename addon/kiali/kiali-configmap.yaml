@@ -12,6 +12,6 @@ data:
       web_root: /
     external_services:
       jaeger:
-        url: "http://172.22.101.101:31888"
+        url: "http://172.17.8.101:31888"
       grafana:
         url: "http://grafana.istio.jimmysong.io"
