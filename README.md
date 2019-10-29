@@ -1,3 +1,8 @@
+# Orignal에서 addon 설치만 제거한 버전임.
+* forVM 폴더 추가.
+* .gitignore 추가
+* /etc/environment 파일에 Language 셋팅 추가함.
+
 # Setting up a distributed Kubernetes cluster along with Istio service mesh locally with Vagrant and VirtualBox
 
 [使用Vagrant和VirtualBox在本地搭建分布式Kubernetes集群和Istio Service Mesh - 中文](README-cn.md)
@@ -44,7 +49,7 @@ The container network range is `170.33.0.0/16` owned by flanneld with `host-gw` 
 * Kubernetes 1.9+ (support the latest version 1.15.0)
 * Across GFW to download the kubernetes files (For China users only)
 * MacOS/Linux (**Windows is not supported completely**)
-* NFS Server Package 
+* NFS Server Package
 
 ### Support Add-ons
 
@@ -348,7 +353,7 @@ User/password: admin/admin
 
 ### Weave scope
 
-[Weave scope](https://github.com/weaveworks/scope) is a project for monitoring, visualisation & management for Docker & Kubernetes, see <https://www.weave.works/oss/scope/> 
+[Weave scope](https://github.com/weaveworks/scope) is a project for monitoring, visualisation & management for Docker & Kubernetes, see <https://www.weave.works/oss/scope/>
 
 Run the following commands in your local machine.
 
