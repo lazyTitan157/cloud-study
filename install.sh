@@ -11,7 +11,7 @@ yum install -y wget curl conntrack-tools vim net-tools telnet tcpdump bind-utils
 kubernetes_release="/vagrant/kubernetes-server-linux-amd64.tar.gz"
 # Download Kubernetes
 if [[ $(hostname) == "node1" ]] && [[ ! -f "$kubernetes_release" ]]; then
-    wget https://storage.googleapis.com/kubernetes-release/release/v1.11.0/kubernetes-server-linux-amd64.tar.gz -P /vagrant/
+    wget https://storage.googleapis.com/kubernetes-release/release/v1.15.0/kubernetes-server-linux-amd64.tar.gz -P /vagrant/
 fi
 
 # enable ntp to sync time
@@ -44,6 +44,18 @@ cat /etc/resolv.conf
 echo 'disable swap'
 swapoff -a
 sed -i '/swap/s/^/#/' /etc/fstab
+
+# for Locale setting
+[ ! -f /etc/environment ]&&touch /etc/environment
+_x=$(cat /etc/environment|grep LANG)
+if [ ${#_x} -eq 0 ] ;then
+cat <<EOF>> /etc/environment
+LANG="ko_KR.UTF\-8"
+LANGUAGE="ko_KR:ko:en_GB:en"
+EOF
+else
+   echo "exist"
+fi
 
 #create group if not exists
 egrep "^docker" /etc/group >& /dev/null
@@ -193,21 +205,22 @@ then
     systemctl enable kube-proxy
     systemctl start kube-proxy
 
-    echo "deploy coredns"
-    cd /vagrant/addon/dns/
-    ./dns-deploy.sh -r 10.254.0.0/16 -i 10.254.0.2 |kubectl apply -f -
-    cd -
+    # nowage delete
+    # echo "deploy coredns"
+    # cd /vagrant/addon/dns/
+    # ./dns-deploy.sh -r 10.254.0.0/16 -i 10.254.0.2 |kubectl apply -f -
+    # cd -
 
-    echo "deploy kubernetes dashboard"
-    kubectl apply -f /vagrant/addon/dashboard/kubernetes-dashboard.yaml
-    echo "create admin role token"
-    kubectl apply -f /vagrant/yaml/admin-role.yaml
-    echo "the admin role token is:"
-    kubectl -n kube-system describe secret `kubectl -n kube-system get secret|grep admin-token|cut -d " " -f1`|grep "token:"|tr -s " "|cut -d " " -f2
-    echo "login to dashboard with the above token"
-    echo https://172.17.8.101:`kubectl -n kube-system get svc kubernetes-dashboard -o=jsonpath='{.spec.ports[0].port}'`
-    echo "install traefik ingress controller"
-    kubectl apply -f /vagrant/addon/traefik-ingress/
+    # echo "deploy kubernetes dashboard"
+    # kubectl apply -f /vagrant/addon/dashboard/kubernetes-dashboard.yaml
+    # echo "create admin role token"
+    # kubectl apply -f /vagrant/yaml/admin-role.yaml
+    # echo "the admin role token is:"
+    # kubectl -n kube-system describe secret `kubectl -n kube-system get secret|grep admin-token|cut -d " " -f1`|grep "token:"|tr -s " "|cut -d " " -f2
+    # echo "login to dashboard with the above token"
+    # echo https://172.17.8.101:`kubectl -n kube-system get svc kubernetes-dashboard -o=jsonpath='{.spec.ports[0].port}'`
+    # echo "install traefik ingress controller"
+    # kubectl apply -f /vagrant/addon/traefik-ingress/
 fi
 
 echo "Configure Kubectl to autocomplete"
