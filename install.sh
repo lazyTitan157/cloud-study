@@ -50,7 +50,7 @@ sed -i '/swap/s/^/#/' /etc/fstab
 _x=$(cat /etc/environment|grep LANG)
 if [ ${#_x} -eq 0 ] ;then
 cat <<EOF>> /etc/environment
-LANG="ko_KR.UTF\-8"
+LANG="ko_KR.UTF-8"
 LANGUAGE="ko_KR:ko:en_GB:en"
 EOF
 else
@@ -68,7 +68,8 @@ usermod -aG docker vagrant
 rm -rf ~/.docker/
 yum install -y docker.x86_64
 # To fix docker exec error, downgrade docker version, see https://github.com/openshift/origin/issues/21590
-yum downgrade -y docker-1.13.1-75.git8633870.el7.centos.x86_64 docker-client-1.13.1-75.git8633870.el7.centos.x86_64 docker-common-1.13.1-75.git8633870.el7.centos.x86_64
+#nowage 
+# yum downgrade -y docker-1.13.1-75.git8633870.el7.centos.x86_64 docker-client-1.13.1-75.git8633870.el7.centos.x86_64 docker-common-1.13.1-75.git8633870.el7.centos.x86_64
 
 cat > /etc/docker/daemon.json <<EOF
 {
