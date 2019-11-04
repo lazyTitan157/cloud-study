@@ -6,4 +6,5 @@ kubernetes
 *.retry
 *.log
 forVm/
+!forVm/
 !forVm/.ThisFolderIsIgnoredByGit
