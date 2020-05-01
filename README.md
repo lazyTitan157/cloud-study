@@ -18,6 +18,47 @@ vagrant ssh node1
    sudo -i
    kubectl cluster-info
 ```
+## Usage
+```
+git config --global core.autocrlf false
+git config --global core.eol lf
+cd 
+git clone https://github.com/Finfra/kubernetes_quickstart
+cd kubernetes_quickstart
+vagrant plugin install vagrant-winnfsd
+vagrant up
+vagrant status 
+vagrant ssh node1
+   sudo -i
+   kubectl cluster-info
+```
+
+## 상태확인
+```
+vagrant ssh node1
+   sudo -i
+   systemctl status docker                  |head -n 5
+   systemctl status etcd                    |head -n 5
+   systemctl status flanneld                |head -n 5
+   systemctl status kube-apiserver          |head -n 5
+   systemctl status kube-controller-manager |head -n 5
+   systemctl status kube-scheduler          |head -n 5
+   kubectl get nodes
+```
+## 서비스 다시 시작
+```
+vagrant ssh node1
+   sudo -i
+   systemctl restart docker
+   systemctl restart etcd
+   etcdctl mkdir /kube-centos/network
+   etcdctl mk /kube-centos/network/config '{"Network":"172.33.0.0/16","SubnetLen":24,"Backend":{"Type":"host-gw"}}'
+   systemctl restart flanneld
+   systemctl restart kube-apiserver
+   systemctl restart kube-controller-manager
+   systemctl restart kube-scheduler
+   kubectl get nodes
+```
 
 # Setting up a distributed Kubernetes cluster along with Istio service mesh locally with Vagrant and VirtualBox
 
