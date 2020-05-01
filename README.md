@@ -2,6 +2,17 @@
 * forVM 폴더 추가.
 * .gitignore 추가
 * /etc/environment 파일에 Language 셋팅 추가함.
+## Usage
+```
+git config --global core.autocrlf false
+git config --global core.eol lf
+cd 
+git clone https://github.com/Finfra/kubernetes_quickstart
+cd kubernetes_quickstart
+vagrant plugin install vagrant-winnfsd
+vagrant up
+vagrant status 
+```
 
 # Setting up a distributed Kubernetes cluster along with Istio service mesh locally with Vagrant and VirtualBox
 
