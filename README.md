@@ -2,6 +2,7 @@
 * forVM 폴더 추가.
 * .gitignore 추가
 * /etc/environment 파일에 Language 셋팅 추가함.
+* node숫자 2개로 수정함
 ## Usage
 ```
 git config --global core.autocrlf false
