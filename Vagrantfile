@@ -8,12 +8,12 @@ Vagrant.configure("2") do |config|
   end  
   
   # nowage Changed
-  config.vm.network :private_network, ip: "172.3.4.11"
+  config.vm.network "private_network", ip: "172.17.8.9"
 
   #config.vm.synced_folder ".", "/vagrant", type: "rsync"
   config.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_udp: false
   
-  $num_instances = 3
+  $num_instances = 2
   # curl https://discovery.etcd.io/new?size=3
   $etcd_cluster = "node1=http://172.17.8.101:2380"
   (1..$num_instances).each do |i|
