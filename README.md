@@ -23,7 +23,6 @@ vagrant ssh node1
 ```
 vagrant ssh node1
    sudo -i
-   systemctl status docker                  |head -n 5
    systemctl status etcd                    |head -n 5
    systemctl status flanneld                |head -n 5
    systemctl status kube-apiserver          |head -n 5
@@ -35,7 +34,6 @@ vagrant ssh node1
 ```
 vagrant ssh node1
    sudo -i
-   systemctl restart docker
    systemctl restart etcd
    etcdctl mkdir /kube-centos/network
    etcdctl mk /kube-centos/network/config '{"Network":"172.33.0.0/16","SubnetLen":24,"Backend":{"Type":"host-gw"}}'
