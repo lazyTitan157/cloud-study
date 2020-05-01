@@ -8,7 +8,7 @@ Vagrant.configure("2") do |config|
   end  
   
   # nowage Changed
-  config.vm.network "private_network", ip: "172.17.8.9"
+  # config.vm.network "private_network", ip: "172.17.8.9"
 
   #config.vm.synced_folder ".", "/vagrant", type: "rsync"
   config.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_udp: false
