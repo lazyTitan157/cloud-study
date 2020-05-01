@@ -14,7 +14,7 @@ vagrant up
 vagrant status 
 vagrant ssh node1
    sudo -i
-   kubernetes cluster-info
+   kubectl cluster-info
 ```
 
 # Setting up a distributed Kubernetes cluster along with Istio service mesh locally with Vagrant and VirtualBox
