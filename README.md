@@ -1,4 +1,5 @@
 # Orignal에서 addon 설치만 제거한 버전임.
+* Ubuntu나 MacOS에 설치된 Hyperviser가 동작하는 Ubuntu Vm에서 작동시킬 것
 * forVM 폴더 추가.
 * .gitignore 추가
 * /etc/environment 파일에 Language 셋팅 추가함.
