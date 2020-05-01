@@ -18,21 +18,6 @@ vagrant ssh node1
    sudo -i
    kubectl cluster-info
 ```
-## Usage
-```
-git config --global core.autocrlf false
-git config --global core.eol lf
-cd 
-git clone https://github.com/Finfra/kubernetes_quickstart
-cd kubernetes_quickstart
-vagrant plugin install vagrant-winnfsd
-vagrant up
-vagrant status 
-vagrant ssh node1
-   sudo -i
-   kubectl cluster-info
-```
-
 ## 상태확인
 ```
 vagrant ssh node1
