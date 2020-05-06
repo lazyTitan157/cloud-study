@@ -56,43 +56,55 @@ latest: digest: sha256:d8e24887f78ff552f9a2d0c800cf1572e3a46a6e2b657194a6fa44b09
 
 ```
 
---------------------
-
-
-# 앞서 빌드한 Docker image 확인
+#최종 성공한 명령어 및 결과
 ```
-root@u1:~/kuberTest# docker images
-REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
-1azytitan157/nginx-test   1                   8214eebb1c36        2 minutes ago       154MB
-```
-# 빌드한 이미지 실행 후 접속 및 nginx 실행 확인
-```
-root@u1:~/kuberTest# docker run -it 1azytitan157/nginx-test:1
-root@e8d32c35ed31:/# ps -ef | grep nginx
-root          8      1  0 07:57 ?        00:00:00 nginx: master process nginx
-www-data      9      8  0 07:57 ?        00:00:00 nginx: worker process
-www-data     10      8  0 07:57 ?        00:00:00 nginx: worker process
-www-data     11      8  0 07:57 ?        00:00:00 nginx: worker process
-root         16     12  0 07:58 pts/0    00:00:00 grep --color=auto nginx
-```
-```
-root@u1:~/kuberTest# docker run --name new-nginx-test -d -p 8081:80 1azytitan157/nginx-test:1
-930e9135d6697a632e2ab901b3ad8ac4c289e2790d9d05014bb13d5c5735f07b
+root@u1:~/kuberTest# docker build -t 1azytitan157/nginx-test:latest .                 Sending build context to Docker daemon  104.4kB
+Step 1/6 : FROM ubuntu
+ ---> 1d622ef86b13
+Step 2/6 : COPY ./install.sh /
+ ---> Using cache
+ ---> 60ca85c4c6ed
+Step 3/6 : RUN chmod 755 /install.sh
+ ---> Using cache
+ ---> 4c3c24a5f928
+Step 4/6 : RUN /install.sh
+ ---> Using cache
+ ---> 01576f28f3f1
+Step 5/6 : CMD [ "nginx", "-g", "daemon off;"]
+ ---> Using cache
+ ---> 85525e3b27f4
+Step 6/6 : expose 80
+ ---> Using cache
+ ---> b07bb3f5e983
+Successfully built b07bb3f5e983
+Successfully tagged 1azytitan157/nginx-test:latest
+root@u1:~/kuberTest# docker run -d --name latest-nginx-test -p 8888:80 1azytitan157/nginx-test:latest
+04448e2976b0a74c72411ffe18e7800dc5de69dc0f10a7a26f73c660e1e50b68
 root@u1:~/kuberTest# docker ps -a
-CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS                      PORTS               NAMES
-930e9135d669        1azytitan157/nginx-test:1   "/bin/sh -c /start.sh"   3 seconds ago       Exited (0) 3 seconds ago                        new-nginx-test
-```
+CONTAINER ID        IMAGE                            COMMAND                  CREATED              STATUS                          PORTS                  NAMES
+04448e2976b0        1azytitan157/nginx-test:latest   "nginx -g 'daemon of…"   2 seconds ago        Up 2 seconds                    0.0.0.0:8888->80/tcp   latest-nginx-test
+d37a46ca44c7        c3fab651388d                     "/bin/sh -c /start.sh"   About a minute ago   Exited (0) About a minute ago                          latest-nginx
+a9c752dbef87        8214eebb1c36                     "/bin/sh -c /start.sh"   12 minutes ago       Exited (0) 12 minutes ago                              latest
+2f93bc7b3b5d        1azytitan157/nginx-test:2        "/bin/sh -c /start.sh"   15 minutes ago       Exited (0) 15 minutes ago                              n1
+4f5b6fbdf26c        1azytitan157/nginx-test:2        "/bin/sh -c /start.sh"   16 minutes ago       Exited (0) 16 minutes ago                              new-nginx-test2
+7071095ab99b        1azytitan157/nginx-test:2        "/bin/sh -c /start.sh"   50 minutes ago       Up 50 minutes                   80/tcp                 pull2
+930e9135d669        1azytitan157/nginx-test:1        "/bin/sh -c /start.sh"   58 minutes ago       Exited (0) 58 minutes ago                              new-nginx-test
+18234154d5a7        1azytitan157/nginx-test:1        "/bin/sh -c /start.sh"   About an hour ago    Up About an hour                                       pulled
+9c51b71404d0        1azytitan157/practice:1          "/bin/bash"              About an hour ago    Created                                                pulled1
+e8d32c35ed31        1azytitan157/nginx-test:1        "/bin/sh -c /start.sh"   About an hour ago    Up About an hour                                       vigorous_antonelli
+76edf39ccff8        1azytitan157/nginx-test:1        "/bin/sh -c /start.sh"   About an hour ago    Exited (0) About an hour ago                           new-nginx
+root@u1:~/kuberTest# docker commit -m "nginx installed test latest" latest-nginx-test 1azytitan157/nginx-test:latest
+sha256:1aedc3898d9b8bf9978014e0567de3ea2dd2b4bd0526dd64fd4c8427e40e7d62
+root@u1:~/kuberTest# docker push 1azytitan157/nginx-test:latest
+The push refers to repository [docker.io/1azytitan157/nginx-test]
+6de1bb463622: Pushed
+53e7a7b33e87: Layer already exists
+99f3140ae4d9: Layer already exists
+d700ae1b2f97: Layer already exists
+8891751e0a17: Layer already exists
+2a19bd70fcd4: Layer already exists
+9e53fd489559: Layer already exists
+7789f1a3d4e9: Layer already exists
+latest: digest: sha256:0956b4068e02760c6f4e459575dd04af7a0975a51dbd1e7e7ef2bd62eed7b7a3 size: 1985
 
-# 이미지 실행 후 도커 상태 확인
-```
-root@u1:~/kuberTest# docker ps
-CONTAINER ID        IMAGE                       COMMAND                  CREATED              STATUS              PORTS               NAMES
-e8d32c35ed31        1azytitan157/nginx-test:1   "/bin/sh -c /start.sh"   About a minute ago   Up About a minute
-```
-
-# 도커허브에 이미지 업로드
-```
-root@u1:~/kuberTest# docker commit -m "nginx installed test" new-nginx-test 1azytitan157/nginx-test:2
-sha256:3aef11033372e7b9f9687d6280b67b4b54b2e3f094c15c388808a8142d7344bc
-root@u1:~/kuberTest# docker push 1azytitan157/nginx-test
 ```
