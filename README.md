@@ -41,6 +41,14 @@ www-data     10      8  0 07:57 ?        00:00:00 nginx: worker process
 www-data     11      8  0 07:57 ?        00:00:00 nginx: worker process
 root         16     12  0 07:58 pts/0    00:00:00 grep --color=auto nginx
 ```
+```
+root@u1:~/kuberTest# docker run --name new-nginx-test -d -p 8081:80 1azytitan157/nginx-test:1
+930e9135d6697a632e2ab901b3ad8ac4c289e2790d9d05014bb13d5c5735f07b
+root@u1:~/kuberTest# docker ps -a
+CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS                      PORTS               NAMES
+930e9135d669        1azytitan157/nginx-test:1   "/bin/sh -c /start.sh"   3 seconds ago       Exited (0) 3 seconds ago                        new-nginx-test
+```
+
 # 이미지 실행 후 도커 상태 확인
 ```
 root@u1:~/kuberTest# docker ps
@@ -75,4 +83,9 @@ d700ae1b2f97: Layer already exists
 9e53fd489559: Layer already exists
 7789f1a3d4e9: Layer already exists
 latest: digest: sha256:7ef1437f1af5b1487fdda96cf676026cb0805959165107c1bbed40bba6384930 size: 2399
+```
+```
+root@u1:~/kuberTest# docker commit -m "nginx installed test" new-nginx-test 1azytitan157/nginx-test:2
+sha256:3aef11033372e7b9f9687d6280b67b4b54b2e3f094c15c388808a8142d7344bc
+root@u1:~/kuberTest# docker push 1azytitan157/nginx-test
 ```
