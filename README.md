@@ -52,4 +52,27 @@ e8d32c35ed31        1azytitan157/nginx-test:1   "/bin/sh -c /start.sh"   About a
 ```
 root@u1:~/kuberTest# docker commit -m "nginx installed" vigorous_antonelli 1azytitan157/nginx-test
 
+root@u1:~/kuberTest# docker push 1azytitan157/nginx-test
+The push refers to repository [docker.io/1azytitan157/nginx-test]
+b340dbfbcbe5: Pushed
+fcdfc1b18df5: Pushed
+53e7a7b33e87: Pushed
+99f3140ae4d9: Pushed
+d700ae1b2f97: Pushed
+8891751e0a17: Mounted from library/ubuntu
+2a19bd70fcd4: Mounted from library/ubuntu
+9e53fd489559: Mounted from library/ubuntu
+7789f1a3d4e9: Mounted from library/ubuntu
+1: digest: sha256:7395ad7c491d2e6d1d48b43b7a04d212a5b0f22a0d2435d720fb21e947149e4c size: 2192
+d9ab52febc37: Pushed
+b340dbfbcbe5: Layer already exists
+fcdfc1b18df5: Layer already exists
+53e7a7b33e87: Layer already exists
+99f3140ae4d9: Layer already exists
+d700ae1b2f97: Layer already exists
+8891751e0a17: Layer already exists
+2a19bd70fcd4: Layer already exists
+9e53fd489559: Layer already exists
+7789f1a3d4e9: Layer already exists
+latest: digest: sha256:7ef1437f1af5b1487fdda96cf676026cb0805959165107c1bbed40bba6384930 size: 2399
 ```
