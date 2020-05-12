@@ -1,6 +1,7 @@
 resource "aws_key_pair" "kt-cloud-key" {
   key_name   = "kt-cloud-key"
-  public_key = file(var.PATH_TO_PUBLIC_KEY)
+  public_key = "~/kt-cloud-key"
+  #file(var.PATH_TO_PUBLIC_KEY)
 }
 
 resource "aws_instance" "example" {
@@ -28,13 +29,5 @@ resource "aws_instance" "example" {
     private_key = file(var.PATH_TO_PRIVATE_KEY)
   }
   tags = {
-    # another way to define and use variables
-    #Name = format("MyInstance%s", var.V1)
-    #Name = "MyInstance${var.V1}"
-    Name = join("", ["MyInstance", var.V1])
   }
-}
-
-variable "V1" {
-  default = "V1"
 }
