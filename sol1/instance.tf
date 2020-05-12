@@ -26,7 +26,7 @@ resource "aws_instance" "example" {
   }
 
   connection {
-    host        = coalesce(self.public_ip, self.private_ip)
+    #host        = coalesce(self.public_ip, self.private_ip)
     user        = "ubuntu"
     #var.INSTANCE_USERNAME
     private_key = "~/kt-cloud-key"
