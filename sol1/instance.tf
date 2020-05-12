@@ -1,9 +1,6 @@
 resource "aws_key_pair" "kt-cloud-key" {
   key_name   = "kt-cloud-key"
   public_key = file(var.PATH_TO_PUBLIC_KEY)
-  lifecycle {
-    ignore_changes = [tags]
-  }
 }
 
 resource "aws_instance" "example" {
