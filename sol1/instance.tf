@@ -1,11 +1,12 @@
 resource "aws_key_pair" "kt-cloud-key" {
   key_name   = "kt-cloud-key"
-  public_key = "~/kt-cloud-key"
+  public_key = "~/kt-cloud-key.pub"
   #file(var.PATH_TO_PUBLIC_KEY)
 }
 
 resource "aws_instance" "example" {
-  ami           = lookup(var.AMIS, var.AWS_REGION)
+  ami           = "ami-00edfb46b107f643c"
+  #lookup(var.AMIS, var.AWS_REGION)
   instance_type = "t2.micro"
   key_name      = aws_key_pair.kt-cloud-key.key_name
 
@@ -25,8 +26,10 @@ resource "aws_instance" "example" {
 
   connection {
     host        = coalesce(self.public_ip, self.private_ip)
-    user        = var.INSTANCE_USERNAME
-    private_key = file(var.PATH_TO_PRIVATE_KEY)
+    user        = "ubuntu"
+    #var.INSTANCE_USERNAME
+    private_key = "~/kt-cloud-key"
+    #file(var.PATH_TO_PRIVATE_KEY)
   }
   tags = {
   }
