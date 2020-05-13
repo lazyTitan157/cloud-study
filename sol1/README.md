@@ -9,119 +9,19 @@
 ![5 1 3](https://user-images.githubusercontent.com/8167433/81762488-b27bf800-9507-11ea-8a82-7bcbfd0332e0.png)
 
 ### 위를 구현할때 Jenkins에서 생성한 /var/lib/jenkins/jobs/{job이름}/config.xml 파일을 /sol1폴더에 첨부하시오.
+* https://github.com/lazyTitan157/jenkins-test/blob/master/sol1/config.xml
 ```
 vagrant@jenkins1:~$ cat /var/lib/jenkins/jobs/jenkins-test/config.xml
 ```
-```
-<?xml version='1.1' encoding='UTF-8'?>
-<project>
-  <actions/>
-  <description></description>
-  <keepDependencies>false</keepDependencies>
-  <properties/>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@4.2.2">
-    <configVersion>2</configVersion>
-    <userRemoteConfigs>
-      <hudson.plugins.git.UserRemoteConfig>
-        <url>https://1azytitan@bitbucket.org/1azytitan/base.git</url>
-      </hudson.plugins.git.UserRemoteConfig>
-    </userRemoteConfigs>
-    <branches>
-      <hudson.plugins.git.BranchSpec>
-        <name>*/master</name>
-      </hudson.plugins.git.BranchSpec>
-    </branches>
-    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
-    <submoduleCfg class="list"/>
-    <extensions/>
-  </scm>
-  <canRoam>true</canRoam>
-  <disabled>false</disabled>
-  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
-  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
-  <triggers/>
-  <concurrentBuild>false</concurrentBuild>
-  <builders>
-    <hudson.plugins.gradle.Gradle plugin="gradle@1.36">
-      <switches></switches>
-      <tasks></tasks>
-      <rootBuildScriptDir></rootBuildScriptDir>
-      <buildFile></buildFile>
-      <gradleName>(Default)</gradleName>
-      <useWrapper>false</useWrapper>
-      <makeExecutable>false</makeExecutable>
-      <useWorkspaceAsHome>false</useWorkspaceAsHome>
-      <wrapperLocation></wrapperLocation>
-      <passAllAsSystemProperties>false</passAllAsSystemProperties>
-      <projectProperties></projectProperties>
-      <passAllAsProjectProperties>false</passAllAsProjectProperties>
-    </hudson.plugins.gradle.Gradle>
-  </builders>
-  <publishers/>
-  <buildWrappers>
-    <org.jfrog.hudson.gradle.ArtifactoryGradleConfigurator plugin="artifactory@3.6.2">
-      <deployMaven>false</deployMaven>
-      <deployIvy>false</deployIvy>
-      <deployBuildInfo>true</deployBuildInfo>
-      <includeEnvVars>false</includeEnvVars>
-      <deployerCredentialsConfig>
-        <credentialsId></credentialsId>
-        <overridingCredentials>false</overridingCredentials>
-        <ignoreCredentialPluginDisabled>false</ignoreCredentialPluginDisabled>
-      </deployerCredentialsConfig>
-      <resolverCredentialsConfig>
-        <credentialsId></credentialsId>
-        <overridingCredentials>false</overridingCredentials>
-        <ignoreCredentialPluginDisabled>false</ignoreCredentialPluginDisabled>
-      </resolverCredentialsConfig>
-      <ivyPattern>[organisation]/[module]/ivy-[revision].xml</ivyPattern>
-      <enableIssueTrackerIntegration>false</enableIssueTrackerIntegration>
-      <aggregateBuildIssues>false</aggregateBuildIssues>
-      <artifactPattern>[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]</artifactPattern>
-      <useMavenPatterns>false</useMavenPatterns>
-      <artifactDeploymentPatterns>
-        <includePatterns></includePatterns>
-        <excludePatterns></excludePatterns>
-      </artifactDeploymentPatterns>
-      <discardOldBuilds>false</discardOldBuilds>
-      <passIdentifiedDownstream>false</passIdentifiedDownstream>
-      <discardBuildArtifacts>true</discardBuildArtifacts>
-      <asyncBuildRetention>false</asyncBuildRetention>
-      <deploymentProperties></deploymentProperties>
-      <useArtifactoryGradlePlugin>true</useArtifactoryGradlePlugin>
-      <allowPromotionOfNonStagedBuilds>false</allowPromotionOfNonStagedBuilds>
-      <filterExcludedArtifactsFromBuild>true</filterExcludedArtifactsFromBuild>
-      <resolverDetails>
-        <artifactoryName>myArtifactory</artifactoryName>
-        <artifactoryUrl>http://jm2:8081/artifactory</artifactoryUrl>
-        <resolveReleaseRepository>
-          <keyFromText></keyFromText>
-          <keyFromSelect></keyFromSelect>
-          <dynamicMode>false</dynamicMode>
-        </resolveReleaseRepository>
-        <stagingPlugin/>
-      </resolverDetails>
-      <defaultPromotionTargetRepository></defaultPromotionTargetRepository>
-      <deployerDetails>
-        <artifactoryName>myArtifactory</artifactoryName>
-        <artifactoryUrl>http://jm2:8081/artifactory</artifactoryUrl>
-        <deployReleaseRepository>
-          <keyFromText></keyFromText>
-          <keyFromSelect>gradle-dev-local</keyFromSelect>
-          <dynamicMode>false</dynamicMode>
-        </deployReleaseRepository>
-        <stagingPlugin>
-          <pluginName>None</pluginName>
-        </stagingPlugin>
-        <userPluginKey>None</userPluginKey>
-      </deployerDetails>
-      <deployArtifacts>true</deployArtifacts>
-      <envVarsPatterns>
-        <includePatterns></includePatterns>
-        <excludePatterns>*password*,*psw*,*secret*,*key*,*token*</excludePatterns>
-      </envVarsPatterns>
-      <customBuildName></customBuildName>
-      <overrideBuildName>false</overrideBuildName>
-    </org.jfrog.hudson.gradle.ArtifactoryGradleConfigurator>
-  </buildWrappers>
-```
+
+
+### (가점2.5%) git레포지터리를 fork떠서 작업함
+- https://bitbucket.org/1azytitan/base/src/master/
+### (가점1.5%) git 소스 코드를 수정하고 이를 업그레이든 한 결과를 README.md에 표현할 경우
+* 소스 수정 후, 빌드 결과
+![5 1 plus b](https://user-images.githubusercontent.com/8167433/81766486-31c1f980-9511-11ea-94a8-a5f50a9eb151.png)
+* 소스 수정 후, 전송 결과
+![5 1 plus after](https://user-images.githubusercontent.com/8167433/81766461-2242b080-9511-11ea-87c6-7f5ad63c19e1.png)
+
+* bitbucket 소스 코드 수정결과 UI
+![5 1 plus](https://user-images.githubusercontent.com/8167433/81766443-1656ee80-9511-11ea-8057-4a84ccd5fbae.png)
