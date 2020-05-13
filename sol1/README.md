@@ -1,6 +1,14 @@
+# Git 레포지터리 https://bitbucket.org/jgnam/base.git 의 소스코드를 Jenkins를 통해 Build하시오.
+* 빌드 결과(Build에 성공한 Jenkins UI 이미지)
+![5 1 1](https://user-images.githubusercontent.com/8167433/81762390-75b00100-9507-11ea-91c1-abde92955bd6.png)
 
+# 위 1번에서 Build된 Artifact를 jenkins로 Artifactory서버로 전송하시오.
+* 빌드 결과(Build에 성공한 Jenkins UI 이미지)
+![5 1 2](https://user-images.githubusercontent.com/8167433/81762444-97a98380-9507-11ea-9dba-fd960cbf52e5.png)
+* 전송 결과(전송에 성공한 Artifactory UI 이미지)
+![5 1 3](https://user-images.githubusercontent.com/8167433/81762488-b27bf800-9507-11ea-8a82-7bcbfd0332e0.png)
 
-
+# 위를 구현할때 Jenkins에서 생성한 /var/lib/jenkins/jobs/{job이름}/config.xml 파일을 /sol1폴더에 첨부하시오.
 ```
 vagrant@jenkins1:~$ cat /var/lib/jenkins/jobs/jenkins-test/config.xml
 ```
