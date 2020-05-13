@@ -1,23 +1,28 @@
 # Usage
-* cp ../terraform.tfvars ./
-* cp ../mykey* ./
+### Terraform을 통한 instance 생성 과정을 ./sol1/README.md에 저장하시오.
+```
+terraform init
+terraform apply -auto-approve
+```
+### 요건에 맞는 테스트 과정을 ./sol1/README.md에 저장하시오.
+* AWS콘솔에서 security group 설정 필요(22번, 80번 포트 오픈)
+```
+cat terraform.tfstate|grep public_ip
+ssh -i kt-cloud-key ubuntu@public_IP
 
-* terraform init
-
-* terraform apply -auto-approve
-* cat terraform.tfstate|grep public_ip
-* ssh -i kt-cloud-key ubuntu@public_IP
- - security group 80 port open
-
-# 실행 결과
-### nginx process 확인
+# AWS ubuntu 접속 후
+ps -ef | grep nginx
+curl localhost
+```
+### 테스트 실행 결과
+* nginx process 확인
 ```
 ubuntu@ip-172-31-35-52:~$ ps -ef | grep nginx
 root      2465     1  0 00:40 ?        00:00:00 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
 www-data  2467  2465  0 00:40 ?        00:00:00 nginx: worker process
 ubuntu    2761  2748  0 00:41 pts/0    00:00:00 grep --color=auto nginx
 ```
-### nginx 실행화면
+* curl로 웹페이지 확인
 ```
 ubuntu@ip-172-31-35-52:~$ curl localhost
 <!DOCTYPE html>
@@ -47,5 +52,7 @@ Commercial support is available at
 </html>
 ```
 
-# instance 삭제
-* terraform destroy -auto-approve
+### Terraform을 통한 insntace 삭제 과정을 ./sol1/README.md에 저장하시오.
+```
+terraform destroy -auto-approve
+```

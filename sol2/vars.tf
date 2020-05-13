@@ -5,10 +5,10 @@ variable "AWS_REGION" {
 }
 
 variable "PATH_TO_PRIVATE_KEY" {
-  default = "~/kt-cloud-key"
+  default = "~/mykey"
 }
 variable "PATH_TO_PUBLIC_KEY" {
-  default = "~/kt-cloud-key.pub"
+  default = "~/mykey.pub"
 }
 variable "INSTANCE_USERNAME" {
   default = "ubuntu"
@@ -23,5 +23,5 @@ variable "AMIS" {
 }
 
 variable "instance_count" {
-  default = "4"
+  default = "2"
 }
