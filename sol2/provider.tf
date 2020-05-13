@@ -3,4 +3,3 @@ provider "aws" {
     secret_key = var.AWS_SECRET_KEY
     region = var.AWS_REGION
 }
-
