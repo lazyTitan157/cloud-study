@@ -4,8 +4,7 @@ resource "aws_key_pair" "kt-cloud-key" {
 }
 
 resource "aws_instance" "example" {
-  ami           = "ami-00edfb46b107f643c"
-  #lookup(var.AMIS, var.AWS_REGION)
+  ami           = lookup(var.AMIS, var.AWS_REGION)
   instance_type = "t2.micro"
   key_name      = aws_key_pair.kt-cloud-key.key_name
 
