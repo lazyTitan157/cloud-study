@@ -24,8 +24,7 @@ resource "aws_instance" "example" {
 
   connection {
     host        = coalesce(self.public_ip, self.private_ip)
-    user        = "ubuntu"
-    #var.INSTANCE_USERNAME
+    user        = var.INSTANCE_USERNAME
     private_key = file(var.PATH_TO_PRIVATE_KEY)
   }
   tags = {
