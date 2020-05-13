@@ -1,5 +1,5 @@
-resource "aws_key_pair" "mykey" {
-  key_name   = "mykey"
+resource "aws_key_pair" "ktcloudkey" {
+  key_name   = "kt-cloud-key"
   public_key = file(var.PATH_TO_PUBLIC_KEY)
   lifecycle {
     ignore_changes = [tags]
