@@ -18,9 +18,6 @@ resource "aws_instance" "example" {
       "sudo /tmp/script.sh"
     ]
   }
-  provisioner "local-exec" {
-    command = "echo private ip ${aws_instance.example.*.private_ip} >> private_ips.txt"
-  }
 
   connection {
     host        = coalesce(self.public_ip, self.private_ip)
@@ -28,5 +25,6 @@ resource "aws_instance" "example" {
     private_key = file(var.PATH_TO_PRIVATE_KEY)
   }
   tags = {
+    Name = "myInstance"
   }
 }
