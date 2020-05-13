@@ -3,8 +3,6 @@
 ![5 1 1](https://user-images.githubusercontent.com/8167433/81762390-75b00100-9507-11ea-91c1-abde92955bd6.png)
 
 ### 위 1번에서 Build된 Artifact를 jenkins로 Artifactory서버로 전송하시오.
-* 빌드 결과(Build에 성공한 Jenkins UI 이미지)
-![5 1 2](https://user-images.githubusercontent.com/8167433/81762444-97a98380-9507-11ea-9dba-fd960cbf52e5.png)
 * 전송 결과(전송에 성공한 Artifactory UI 이미지)
 ![5 1 3](https://user-images.githubusercontent.com/8167433/81762488-b27bf800-9507-11ea-8a82-7bcbfd0332e0.png)
 
