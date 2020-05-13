@@ -9,12 +9,15 @@
 * ssh -i kt-cloud-key ubuntu@public_IP
  - security group 80 port open
 
+# 실행 결과
+### nginx process 확인
 ```
 ubuntu@ip-172-31-35-52:~$ ps -ef | grep nginx
 root      2465     1  0 00:40 ?        00:00:00 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
 www-data  2467  2465  0 00:40 ?        00:00:00 nginx: worker process
 ubuntu    2761  2748  0 00:41 pts/0    00:00:00 grep --color=auto nginx
 ```
+### nginx 실행화면
 ```
 ubuntu@ip-172-31-35-52:~$ curl localhost
 <!DOCTYPE html>
@@ -43,5 +46,6 @@ Commercial support is available at
 </body>
 </html>
 ```
+
 # instance 삭제
 * terraform destroy -auto-approve
