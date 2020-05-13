@@ -8,7 +8,7 @@
 * 톰캣서버 전송 성공(Tomcat Server의 Admin화면)
 ![5 2 2(tomcat)](https://user-images.githubusercontent.com/8167433/81764446-8f077c00-950c-11ea-89d3-8897a7d19c09.png)
 
-###위를 구현할때 Jenkins에서 생성한 모든 /var/lib/jenkins/jobs/{job이름}/config.xml 파일을 /sol2폴더에 첨부하시오.
+### 위를 구현할때 Jenkins에서 생성한 모든 /var/lib/jenkins/jobs/{job이름}/config.xml 파일을 /sol2폴더에 첨부하시오.
 * 소스코드 빌드한 job의 config.xml
 https://github.com/lazyTitan157/jenkins-test/blob/master/sol2/webapp-job/config.xml
 ```
@@ -20,8 +20,9 @@ https://github.com/lazyTitan157/jenkins-test/blob/master/sol2/webapp-deployment/
 vagrant@jenkins1:~$ cat /var/lib/jenkins/jobs/webapp-deployment/config.xml
 ```
 
+
 ### (가점2.5%) git레포지터리를 fork떠서 작업함
-https://bitbucket.org/1azytitan/webapp/src/master/
+- https://bitbucket.org/1azytitan/webapp/src/master/
 ### (가점1.5%) git 소스 코드를 수정하고 이를 업그레이든 한 결과를 README.md에 표현할 경우
 * before
 ![5 2 plus2 before](https://user-images.githubusercontent.com/8167433/81764818-63d15c80-950d-11ea-8e4f-57376a55a9b4.png)
