@@ -10,7 +10,7 @@ variable "AWS_REGION" {
 ```
 #vars.tf
 variable "instance_count" {
-  default = "2"
+  default = "4"
 }
 ```
 ### ./sol2 폴더에 Terraform코드를 저장할 것

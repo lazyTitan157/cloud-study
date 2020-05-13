@@ -23,5 +23,5 @@ variable "AMIS" {
 }
 
 variable "instance_count" {
-  default = "2"
+  default = "4"
 }
