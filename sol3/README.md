@@ -60,27 +60,66 @@ aws_subnet.main-private-1: Creation complete after 8s [id=subnet-0e553d1ff8639a4
 aws_subnet.main-public-3: Creation complete after 10s [id=subnet-0a500303e327533
 
 ...
-Apply complete! Resources: 17 added, 0 changed, 0 destroyed.
-            "public_ip": "34.240.87.61",
-            "public_ip": "54.170.178.200",
-            "public_ip": "34.247.188.205",
-            "map_public_ip_on_launch": false,
-            "map_public_ip_on_launch": false,
-            "map_public_ip_on_launch": false,
-            "map_public_ip_on_launch": true,
-            "map_public_ip_on_launch": true,
-            "map_public_ip_on_launch": true,
+aws_instance.example2: Still creating... [1m20s elapsed]
+aws_instance.example2 (remote-exec): Setting up nginx (1.17.10-0ubuntu1) ...
+aws_instance.example2 (remote-exec): Processing triggers for ufw (0.36-6) ...
+aws_instance.example2 (remote-exec): Processing triggers for systemd (245.4-4ubuntu3) ...
+aws_instance.example2 (remote-exec): Processing triggers for man-db (2.9.1-1) ...
+aws_instance.example2 (remote-exec): Processing triggers for libc-bin (2.31-0ubuntu9) ...
+aws_instance.example2: Creation complete after 1m26s [id=i-05173b5490461ac1a]
 
+Apply complete! Resources: 17 added, 0 changed, 0 destroyed.
+            "public_ip": "3.249.108.109",
+            "public_ip": "54.75.71.133",
+            "public_ip": "54.194.226.43",
+            "map_public_ip_on_launch": false,
+            "map_public_ip_on_launch": false,
+            "map_public_ip_on_launch": false,
+            "map_public_ip_on_launch": true,
+            "map_public_ip_on_launch": true,
+            "map_public_ip_on_launch": true,
 ```
 
 ### 5. 요건에 맞는 테스트 과정을 ./sol3/README.md에 저장하시오.
 ```
-# cat terraform.tfstate|grep public_ip
-# ssh -i kt-cloud-key ubuntu@public_IP
-## curl localhost
+vagrant@terraformBox:~/terraform_Test/sol3$ ssh -i ~/mykey ubuntu@3.249.108.109
+Last login: Wed May 13 10:37:13 2020 from 59.13.4.75
+ubuntu@ip-10-0-1-207:~$ ps -ef | grep nginx
+root        2528       1  0 10:37 ?        00:00:00 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+www-data    2529    2528  0 10:37 ?        00:00:00 nginx: worker process
+ubuntu      2763    2753  0 10:38 pts/0    00:00:00 grep --color=auto nginx
+ubuntu@ip-10-0-1-207:~$ curl localhost
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
 ```
 
 ### 6. Terraform을 통한 insntace 삭제 과정을 ./sol3/README.md에 저장하시오.
 ```
+vagrant@terraformBox:~/terraform_Test/sol3$ td
 terraform destroy -auto-approve
+...
+Destroy complete! Resources: 17 destroyed.
 ```
