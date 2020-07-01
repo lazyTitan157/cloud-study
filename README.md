@@ -35,3 +35,17 @@
     1. 결제시스템이 과중되면 사용자를 잠시동안 받지 않고 결제를 잠시후에 하도록 유도한다  Circuit breaker, fallback
 1. 성능
     1. 사용자는 항공권 예약내역을 확인할 수 있다. > CQRS
+    
+    
+# 분석/설계
+
+## Event Storming 결과
+
+![flightsystem](https://user-images.githubusercontent.com/63759253/86202972-af63c680-bb9e-11ea-9d1f-0d3e79b46113.jpg)
+
+```
+# 도메인 서열
+- Core : Reservation
+- Supporting : flight
+- General : Payment
+```
