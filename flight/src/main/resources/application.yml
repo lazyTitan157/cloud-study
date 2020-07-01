@@ -1,0 +1,18 @@
+server:
+  port: 8082
+
+spring:
+  profiles: default
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+      bindings:
+        input:
+          group: flight
+          destination: f3
+          contentType: application/json
+        output:
+          destination: f3
+          contentType: application/json
