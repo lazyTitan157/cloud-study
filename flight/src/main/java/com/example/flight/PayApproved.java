@@ -7,6 +7,7 @@ public class PayApproved {
 
 	Long reservationId;
 	Long flightId;
+	
 	public Long getFlightId() {
 		return flightId;
 	}

@@ -7,17 +7,17 @@ public class FlightAdd {
     String flightName;
     int price;
     int seat;
-    double seat2;
+//    double seat2;
     
     
-    public double getSeat2() {
-    	//seat2 = getSeat()*2;
-		return seat2;
-	}
-
-	public void setSeat2(double seat2) {
-		this.seat2 = seat2;
-	}
+//    public double getSeat2() {
+//    	//seat2 = getSeat()*2;
+//		return seat2;
+//	}
+//
+//	public void setSeat2(double seat2) {
+//		this.seat2 = seat2;
+//	}
 
 	String destination;
     public String getDestination() {

@@ -26,7 +26,7 @@ public class Flight {
     private String flightName;
     
     private int seat;  //항공사 직원이 ADD할때 max seat던짐.
-    private double seat2;
+//    private double seat2;
     
 
 	private int price;
@@ -43,7 +43,7 @@ public class Flight {
     	flightAdd.setDestination(this.getDestination());
     	flightAdd.setPrice(this.getPrice());
     	flightAdd.setSeat(this.getSeat());
-    	flightAdd.setSeat2(this.getSeat2());
+//    	flightAdd.setSeat2(this.getSeat2());
     	
    
         ObjectMapper objectMapper = new ObjectMapper();
@@ -63,6 +63,7 @@ public class Flight {
                 .withPayload(json)
                 .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
                 .build());
+        System.out.println("Flight Added");
     }
 
     
@@ -115,13 +116,13 @@ public class Flight {
 		this.status = status;
 	}
 
-    public double getSeat2() {
-		return seat2;
-	}
-
-	public void setSeat2(double seat2) {
-		this.seat2 = seat2;
-	}
+//    public double getSeat2() {
+//		return seat2;
+//	}
+//
+//	public void setSeat2(double seat2) {
+//		this.seat2 = seat2;
+//	}
 
 	public int getPrice() {
 		return price;

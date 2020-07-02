@@ -11,8 +11,8 @@ spring:
       bindings:
         input:
           group: flight
-          destination: f4
+          destination: f7
           contentType: application/json
         output:
-          destination: f4
+          destination: f7
           contentType: application/json
