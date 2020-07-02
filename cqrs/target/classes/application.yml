@@ -1,0 +1,23 @@
+server:
+  port: 8081
+
+spring:
+  profiles: default
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+      bindings:
+        input:
+          group: reservation
+          destination: f7
+          contentType: application/json
+        output:
+          destination: f7
+          contentType: application/json
+          
+          
+api:
+  url:
+    pay: http://localhost:8083
