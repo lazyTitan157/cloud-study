@@ -35,7 +35,7 @@ public class Flight {
     /*******************************/
     /*********** 항공권 등록 ***********/
     /*******************************/
-    @PostPersist @PostUpdate
+    @PostPersist 
     public void onCreated(){
     	FlightAdded flightAdd = new FlightAdded();
     	flightAdd.setFlightId(this.getFlightId());
@@ -65,6 +65,57 @@ public class Flight {
                 .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
                 .build());
         System.out.println("Flight Added");
+    }
+    
+    @PostUpdate
+    public void onModified() {
+    	if(this.getStatus().equals(FlightSeatRequested.class.getSimpleName())) {
+    		FlightSeatRequested flightSeatRequested = new FlightSeatRequested();
+    		flightSeatRequested.setFlightId(this.getFlightId());
+    		flightSeatRequested.setSeat(this.getSeat());
+    		System.out.println(flightSeatRequested.getEventType() +" "+flightSeatRequested.getSeat());
+    		
+//    		repository.save(f);
+    		ObjectMapper objectSendMapper = new ObjectMapper();
+    		String json = null;
+
+    		try {
+    			json = objectSendMapper.writeValueAsString(flightSeatRequested);
+    		} catch (JsonProcessingException e) {
+    			throw new RuntimeException("JSON format exception", e);
+    		}
+
+    		Processor processor = FlightApplication.applicationContext.getBean(Processor.class);
+    		MessageChannel outputChannel = processor.output();
+
+    		outputChannel.send(MessageBuilder
+    				.withPayload(json)
+    				.setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
+    				.build());	
+    	} else {
+			FlightSeatReturned flightSeatReturned = new FlightSeatReturned();
+			flightSeatReturned.setFlightId(this.getFlightId());
+			flightSeatReturned.setSeat(this.getSeat());
+			System.out.println(flightSeatReturned.getEventType() +" "+flightSeatReturned.getSeat());
+			
+			ObjectMapper objectSendMapper = new ObjectMapper();
+			String json = null;
+
+			try {
+				json = objectSendMapper.writeValueAsString(flightSeatReturned);
+			} catch (JsonProcessingException e) {
+				throw new RuntimeException("JSON format exception", e);
+			}
+
+			Processor processor = FlightApplication.applicationContext.getBean(Processor.class);
+			MessageChannel outputChannel = processor.output();
+
+			outputChannel.send(MessageBuilder
+					.withPayload(json)
+					.setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
+					.build());
+			System.out.println("======================");
+		}
     }
 
     

@@ -54,28 +54,8 @@ public class FlightPolicyHandler {
 
 			f.setSeat(f.getSeat() - payApproved.getCount());
 //			System.out.println(f.getSeat());
-			FlightSeatRequested flightSeatRequested = new FlightSeatRequested();
-			flightSeatRequested.setFlightId(f.getFlightId());
-			flightSeatRequested.setSeat(f.getSeat());
-			System.out.println(flightSeatRequested.getEventType() +" "+flightSeatRequested.getSeat());
-			
+			f.setStatus(FlightSeatRequested.class.getSimpleName());
 			repository.save(f);
-			ObjectMapper objectSendMapper = new ObjectMapper();
-			String json = null;
-
-			try {
-				json = objectSendMapper.writeValueAsString(flightSeatRequested);
-			} catch (JsonProcessingException e) {
-				throw new RuntimeException("JSON format exception", e);
-			}
-
-			Processor processor = FlightApplication.applicationContext.getBean(Processor.class);
-			MessageChannel outputChannel = processor.output();
-
-			outputChannel.send(MessageBuilder
-					.withPayload(json)
-					.setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
-					.build());
 			System.out.println("======================");
 			
 			System.out.println("======================");
@@ -90,30 +70,11 @@ public class FlightPolicyHandler {
 			System.out.println("재고량:"+f.getSeat()+" + "+ payCancelled.getCount()+ " " );
 
 			f.setSeat(f.getSeat() + payCancelled.getCount());
-			System.out.println(f.getSeat());
+//			System.out.println(f.getSeat());
 
-			FlightSeatReturned flightSeatReturned = new FlightSeatReturned();
-			flightSeatReturned.setFlightId(f.getFlightId());
-			flightSeatReturned.setSeat(f.getSeat());
-			System.out.println(flightSeatReturned.getEventType() +" "+flightSeatReturned.getSeat());
+			f.setStatus(FlightSeatReturned.class.getSimpleName());
 			repository.save(f);
-			ObjectMapper objectSendMapper = new ObjectMapper();
-			String json = null;
-
-			try {
-				json = objectSendMapper.writeValueAsString(flightSeatReturned);
-			} catch (JsonProcessingException e) {
-				throw new RuntimeException("JSON format exception", e);
-			}
-
-			Processor processor = FlightApplication.applicationContext.getBean(Processor.class);
-			MessageChannel outputChannel = processor.output();
-
-			outputChannel.send(MessageBuilder
-					.withPayload(json)
-					.setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
-					.build());
-			System.out.println("======================");
+			
 			
 		}
         } catch (Exception e) {

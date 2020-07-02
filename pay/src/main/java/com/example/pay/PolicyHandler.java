@@ -86,6 +86,7 @@ public class PolicyHandler {
     			p.setCount(reservationCancelled.getCount());
     			System.out.println(p.getCount());
     			p.setPrice(0);
+    			payRepository.save(p);
     			PayCancelled payCancelled = new PayCancelled(p);
     			
     			ObjectMapper objectSendMapper = new ObjectMapper();
