@@ -2,7 +2,6 @@ package com.example.pay;
 
 public class ReservationCancelled {
 
-
     Long reservationId;
    
 	String phone;
@@ -11,7 +10,12 @@ public class ReservationCancelled {
     int price;
     String reserveStatus;
     
-    public ReservationCancelled() {
+    public ReservationCancelled(Reservation reservation) {
+    	this.reservationId = reservation.getReservationId();
+    	this.flightId = reservation.getFlightId();
+    	this.setPhone(reservation.getPhone());
+    	this.count = 0;
+    	this.price = 0;
     	this.reserveStatus = ReservationCancelled.class.getSimpleName();
     }
 
@@ -45,10 +49,10 @@ public class ReservationCancelled {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public String getStatus() {
+	public String getReserveStatus() {
 		return reserveStatus;
 	}
-	public void setStatus(String status) {
+	public void setReserveStatus(String status) {
 		this.reserveStatus = status;
 	}   
 }

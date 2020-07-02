@@ -1,5 +1,6 @@
 package com.example.pay;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,21 +21,35 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class PolicyHandler {
 
     @Autowired
-    PayRepository Repository;
+    PayRepository payRepository;
+	private Object payById;
 
     @StreamListener(Processor.INPUT)
     public void onEventListen(@Payload String message){
-//    	System.out.println(reservationCancelled.getStatus());
     	System.out.println("##### listener : " + message);
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        ReservationCancelled reservationCancelled = null;
+//        ReservationCancelled reservationCancelled = null;
+        Pay reservationCancelled = null;
+        
+        try {
+        	PayApproved p = objectMapper.readValue(message, PayApproved.class);
+        	System.out.println("type = payApproved");
+        } catch (Exception e) {
+			// TODO: handle exception
+		}
+        try {
+        	PayCancelled payCancelled = objectMapper.readValue(message, PayCancelled.class);
+        	System.out.println("type = payCancelled");
+        } catch (Exception e) {
+			// TODO: handle exception
+		}
         try {
         	
-            reservationCancelled = objectMapper.readValue(message, ReservationCancelled.class);
-            System.out.println(" #### type = " + reservationCancelled.getStatus());
+            reservationCancelled = objectMapper.readValue(message, Pay.class);
+            System.out.println(" #### type = " + reservationCancelled.getReserveStatus());
         
             /**
              * 주문이 들어옴 -> 배송 시작 이벤트 발송
@@ -55,19 +70,31 @@ public class PolicyHandler {
             /**
              * 주문이 취소됨 -> 배송 취소 이벤트 발송
              */
-            if( reservationCancelled.getStatus().equals(ReservationCancelled.class.getSimpleName())){
-            	System.out.println("pay cancelled");
-                Repository = PayApplication.applicationContext.getBean(PayRepository.class);
-                Optional<Pay> payByReserveId = Repository.findById(reservationCancelled.getReservationId());
-    			Pay p = payByReserveId.get();
-    			
+            if( reservationCancelled.getReserveStatus().equals(ReservationCancelled.class.getSimpleName())){
+            	System.out.println(reservationCancelled.getPayId());
+            	
+                payRepository = PayApplication.applicationContext.getBean(PayRepository.class);
+                Iterable<Pay> pays = payRepository.findAll();
+//                pays.iterator()
+                Pay p = null;
+                for (Pay pay : pays) {
+					if(pay.getReservationId().equals(reservationCancelled.getReservationId())) {
+						p = pay;
+						break;
+					}
+				}
+//                Optional<Pay> payById = payRepository.findById(reservationCancelled.getReservationId());
+//    			Pay p = payById.get();
     			p.setPayStatus(PayCancelled.class.getSimpleName());
+    			p.setCount(0);
+    			p.setPrice(0);
+    			PayCancelled payCancelled = new PayCancelled(p);
     			
     			ObjectMapper objectSendMapper = new ObjectMapper();
     			String json = null;
 
     			try {
-    				json = objectSendMapper.writeValueAsString(p);
+    				json = objectSendMapper.writeValueAsString(payCancelled);
     			} catch (JsonProcessingException e) {
     				throw new RuntimeException("JSON format exception", e);
     			}
@@ -80,15 +107,14 @@ public class PolicyHandler {
     					.setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
     					.build());
             }
+        	System.out.println(reservationCancelled.getReserveStatus());
+            if( reservationCancelled != null && reservationCancelled.getReserveStatus().equals("ReservationCancelled") ){
+            	System.out.println(reservationCancelled.getReservationId()+"is Cancelled");	
+            }
 
         }catch (Exception e){
-
+        	System.out.println("no object mapping");
         }
-//    	System.out.println(reservationCancelled.getStatus());
-//        if( reservationCancelled != null && reservationCancelled.getStatus().equals("ReservationCancelled") ){
-//        	System.out.println(reservationCancelled.getReservationId()+"is Cancelled");
-//        	
-//        }
 
 //        if( PayApproved.class.getSimpleName().equals(payApproved.getEventType()) ){
 //            System.out.println("=========요리시작 =========");

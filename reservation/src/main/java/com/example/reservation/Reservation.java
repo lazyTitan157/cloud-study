@@ -34,48 +34,17 @@ public class Reservation {
 
 	@PostPersist
 	public void onCheck(){
-		// 0. parsing
-//		if(reserveStatus != null && reserveStatus.equals("cancel")) {
-//			// 1. 예약취소됨 이벤트 발송
-//			ReservationRepository reservationRepository = ReservationApplication.applicationContext.getBean(ReservationRepository.class);
-//
-//			ReservationCancelled reservationCancelled = new ReservationCancelled();
-//			reservationCancelled.setReservationId(this.getReservationId());
-//
-////			Optional<Reservation> reserveById = reservationRepository.findById(this.getReservationId());
-////			Reservation r = reserveById.get();
-//			
-//			reservationCancelled.setCount(0);
-//			reservationCancelled.setPrice(0);
-////			reservationCancelled.setFlightId(r.getFlightId());
-//			reservationCancelled.setReserveStatus(ReservationCancelled.class.getSimpleName());
-//
-//			ObjectMapper objectMapper = new ObjectMapper();
-//			String json = null;
-//			try {
-//				json = objectMapper.writeValueAsString(reservationCancelled);
-//			} catch (JsonProcessingException e) {
-//				throw new RuntimeException("JSON format exception", e);
-//			}
-//			Processor processor = ReservationApplication.applicationContext.getBean(Processor.class);
-//			MessageChannel outputChannel = processor.output();
-//
-//			outputChannel.send(MessageBuilder
-//					.withPayload(json)
-//					.setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
-//					.build());
-//
-//			System.out.println("Cancelled");
-//		} else {
-			// 1. 예약됨 이벤트 발송
-			ReservationPlaced reservationPlaced = new ReservationPlaced();
-			reservationPlaced.setReservationId(this.getReservationId());;
-			reservationPlaced.setCount(this.getCount());
-			reservationPlaced.setreserveStatus(ReservationPlaced.class.getSimpleName()); //by Constructor
-			reservationPlaced.setFlightId(this.getFlightId());
 
-			reservationPlaced.setPrice(this.getPrice());
-			reservationPlaced.setPhone(this.getPhone());
+		if(reserveStatus != null && reserveStatus.equals("place")) {
+			// 1. 예약됨 이벤트 발송
+			ReservationPlaced reservationPlaced = new ReservationPlaced(this);
+//			reservationPlaced.setReservationId(this.getReservationId());;
+//			reservationPlaced.setCount(this.getCount());
+//			reservationPlaced.setreserveStatus(ReservationPlaced.class.getSimpleName()); //by Constructor
+//			reservationPlaced.setFlightId(this.getFlightId());
+//
+//			reservationPlaced.setPrice(this.getPrice());
+//			reservationPlaced.setPhone(this.getPhone());
 
 			ObjectMapper objectMapper = new ObjectMapper();
 			String json = null;
@@ -98,11 +67,11 @@ public class Reservation {
 			RestTemplate restTemplate = ReservationApplication.applicationContext.getBean(RestTemplate.class);
 			String payUrl = "http://localhost:8083/pays";
 			Pay pay = new Pay();
-			pay.setReservationId(this.reservationId);
-			pay.setCount(this.count);
-			pay.setPrice(this.price);
-			pay.setFlightId(this.flightId);
-			pay.setReserveStatus(this.reserveStatus);
+			pay.setReservationId(reservationPlaced.getReservationId());
+			pay.setCount(reservationPlaced.getCount());
+			pay.setPrice(reservationPlaced.getPrice());
+			pay.setFlightId(reservationPlaced.getFlightId());
+			pay.setReserveStatus(reservationPlaced.getreserveStatus());
 
 			restTemplate.postForEntity(payUrl, pay ,String.class);
 
@@ -110,7 +79,8 @@ public class Reservation {
 			//        if( response.getStatusCode() == HttpStatus.CREATED){
 			//
 			//        }
-//		}
+			//		}
+		}
 	}
 
 	@PostUpdate //PostDelete는 아예삭제
@@ -119,16 +89,17 @@ public class Reservation {
 			// 1. 예약취소됨 이벤트 발송
 			ReservationRepository reservationRepository = ReservationApplication.applicationContext.getBean(ReservationRepository.class);
 
-			ReservationCancelled reservationCancelled = new ReservationCancelled();
-			reservationCancelled.setReservationId(this.getReservationId());
-			reservationCancelled.setReserveStatus(reservationCancelled.getReserveStatus());
-
-			Optional<Reservation> reserveById = reservationRepository.findById(reservationCancelled.getReservationId());
+			Optional<Reservation> reserveById = reservationRepository.findById(this.getReservationId());
 			Reservation r = reserveById.get();
-			r.setCount(0);
-			reservationCancelled.setCount(0);
-			reservationCancelled.setPrice(0);
-			reservationCancelled.setReserveStatus(ReservationCancelled.class.getSimpleName());
+			ReservationCancelled reservationCancelled = new ReservationCancelled(r);
+			//			reservationCancelled.setReservationId(this.getReservationId());
+			//			reservationCancelled.setReserveStatus(reservationCancelled.getReserveStatus());
+			reservationCancelled.setFlightId(r.getFlightId());
+			reservationCancelled.setPhone(r.getPhone());
+			//			r.setCount(0);
+			//			reservationCancelled.setCount(0);
+			//			reservationCancelled.setPrice(0);
+			//			reservationCancelled.setReserveStatus(ReservationCancelled.class.getSimpleName());
 
 			//			Product product = new Product();
 			//			product.setId(orderPlaced.getProductId());

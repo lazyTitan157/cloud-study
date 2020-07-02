@@ -11,10 +11,10 @@ spring:
       bindings:
         input:
           group: reservation
-          destination: f3
+          destination: f7
           contentType: application/json
         output:
-          destination: f3
+          destination: f7
           contentType: application/json
           
           

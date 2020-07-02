@@ -1,7 +1,5 @@
 package com.example.pay;
 
-import java.util.Optional;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -34,46 +32,47 @@ public class Pay {
     @PostPersist
     public void onCreated(){
 		// 0. parsing
-		if(payStatus != null && payStatus.equals("cancel")) {
-			// 1. 예약취소됨 이벤트 발송
-			PayRepository payRepository = PayApplication.applicationContext.getBean(PayRepository.class);
-			
-	        PayCancelled payCancelled = new PayCancelled();
-//	        reservationCancelled.setReservationId(this.getReservationId());
-	        payCancelled.setPayStatus(payCancelled.getPayStatus());
-	        
-	        Optional<Pay> payById = payRepository.findById(this.getPayId());
-	        Pay p = payById.get();
-			p.setCount(0);
-			p.setReserveStatus(payCancelled.getPayStatus());
-//			r.setFlightId(this.getFlightId());
-			p.setPrice(0);
-			//			Product product = new Product();
-//			product.setId(orderPlaced.getProductId());
-
-		    ObjectMapper objectMapper = new ObjectMapper();
-		    String json = null;
-
-		    try {
-		        json = objectMapper.writeValueAsString(p);
-		    } catch (JsonProcessingException e) {
-		        throw new RuntimeException("JSON format exception", e);
-		    }
-		    Processor processor = PayApplication.applicationContext.getBean(Processor.class);
-		    MessageChannel outputChannel = processor.output();
-
-		    outputChannel.send(MessageBuilder
-		            .withPayload(json)
-		            .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
-		            .build());
-		    
-		    System.out.println("Cancelled");
+		if(payStatus != null && payStatus.equals(PayCancelled.class.getSimpleName())) {
+//			// 1. 예약취소됨 이벤트 발송
+//			PayRepository payRepository = PayApplication.applicationContext.getBean(PayRepository.class);
+//			
+//	        PayCancelled payCancelled = new PayCancelled();
+////	        reservationCancelled.setReservationId(this.getReservationId());
+//	        payCancelled.setPayStatus(payCancelled.getPayStatus());
+//	        
+//	        Optional<Pay> payById = payRepository.findById(this.getPayId());
+//	        Pay p = payById.get();
+//			p.setCount(0);
+//			p.setReserveStatus(payCancelled.getPayStatus());
+////			r.setFlightId(this.getFlightId());
+//			p.setPrice(0);
+//			//			Product product = new Product();
+////			product.setId(orderPlaced.getProductId());
+//
+//		    ObjectMapper objectMapper = new ObjectMapper();
+//		    String json = null;
+//
+//		    try {
+//		        json = objectMapper.writeValueAsString(p);
+//		    } catch (JsonProcessingException e) {
+//		        throw new RuntimeException("JSON format exception", e);
+//		    }
+//		    Processor processor = PayApplication.applicationContext.getBean(Processor.class);
+//		    MessageChannel outputChannel = processor.output();
+//
+//		    outputChannel.send(MessageBuilder
+//		            .withPayload(json)
+//		            .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
+//		            .build());
+//		    
+//		    System.out.println("Cancelled");
 		} else {
-        PayApproved payApproved = new PayApproved();
-        payApproved.setPayId(this.getPayId());
-        payApproved.setCount(this.getCount());
-        payApproved.setReservationId(this.getReservationId());
-        payApproved.setPrice(this.getPrice());
+    	
+        PayApproved payApproved = new PayApproved(this);
+//        payApproved.setPayId(this.getPayId());
+//        payApproved.setCount(this.getCount());
+//        payApproved.setReservationId(this.getReservationId());
+//        payApproved.setPrice(this.getPrice());
         
         ObjectMapper objectMapper = new ObjectMapper();
         String json = null;

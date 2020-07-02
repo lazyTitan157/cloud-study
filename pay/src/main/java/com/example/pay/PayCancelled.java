@@ -6,13 +6,18 @@ public class PayCancelled {
 	String payStatus;
 
 	Long reservationId;
-//	Long flightId;
+	Long flightId;
 	int count;
 	int price;
 //	String reserveStatus;
 	
-    public PayCancelled(){
+    public PayCancelled(Pay pay){
+        this.setPayId(pay.getPayId());
         this.payStatus = PayCancelled.class.getSimpleName();
+        this.setReservationId(pay.getReservationId());
+        this.setFlightId(pay.getFlightId());
+        this.setCount(pay.getCount());
+        this.setPrice(pay.getPrice());
     }
 
 	public Long getPayId() {
@@ -63,5 +68,14 @@ public class PayCancelled {
 //		this.reserveStatus = reserveStatus;
 //	}
 
+	public Long getFlightId() {
+		return flightId;
+	}
+
+	public void setFlightId(Long flightId) {
+		this.flightId = flightId;
+	}
+
+	
     
 }

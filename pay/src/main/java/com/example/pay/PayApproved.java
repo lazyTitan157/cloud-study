@@ -11,8 +11,12 @@ public class PayApproved {
 	int price;
 //	String reserveStatus;
 	
-    public PayApproved(){
+    public PayApproved(Pay pay){
         this.payStatus = PayApproved.class.getSimpleName();
+        this.setCount(pay.getCount());
+        this.setPayId(pay.getPayId());
+        this.setPrice(pay.getPrice());
+        this.setReservationId(pay.getReservationId());
     }
 
 	public Long getPayId() {

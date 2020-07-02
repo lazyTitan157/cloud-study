@@ -11,8 +11,8 @@ spring:
       bindings:
         input:
           group: pay
-          destination: f3
+          destination: f7
           contentType: application/json
         output:
-          destination: f3
+          destination: f7
           contentType: application/json

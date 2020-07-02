@@ -10,8 +10,13 @@ public class ReservationPlaced {
     int price;
     String reserveStatus;
     
-    public ReservationPlaced() {
+    public ReservationPlaced(Reservation reservation) {
         this.reserveStatus = ReservationPlaced.class.getSimpleName();
+        this.reservationId = reservation.getReservationId();
+        this.phone = reservation.getPhone();
+        this.setFlightId(reservation.getFlightId());
+        this.setCount(reservation.getCount());
+        this.setPrice(reservation.getPrice());
 	}
     public Long getReservationId() {
 		return reservationId;
