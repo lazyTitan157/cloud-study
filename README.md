@@ -58,10 +58,10 @@ kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic f7 --from-begin
 - Flight등록
 (사용자CMD) http http://localhost:8082/flights flightName=CH777 destination=korea price=300000 seat=40
 - 예약
-(사용자CMD) http POST localhost:8080/reservations flightId=1 reserveStatus="place" count=1 price=10000 phone="01097770770"
+(사용자CMD) http POST localhost:8080/reservations flightId=1 reserveStatus="place" count=1 price=300000 phone="01097770770"
 (REQ/RES) reservationPlaced > payapproved
 (REQ/RES) payApproved > flightSeatRequested
 - 예약취소
-(사용자CMD)  http POST localhost:8080/reservations reservationId=4 count=1 reserveStatus="cancel"
+(사용자CMD)  http POST localhost:8080/reservations reservationId=1 count=1 reserveStatus="cancel"
 (REQ/RES) reservationCancelled > payCancelled
 (REQ/RES) payCancelled > flighSeatReturned
