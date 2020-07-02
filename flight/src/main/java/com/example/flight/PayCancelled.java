@@ -13,9 +13,9 @@ public class PayCancelled {
 	
 //	String reserveStatus;
 	
-    public PayCancelled(){
-        this.payStatus = PayCancelled.class.getSimpleName();
-    }
+//    public PayCancelled(){
+//        this.payStatus = PayCancelled.class.getSimpleName();
+//    }
     public Long getFlightId() {
 		return flightId;
 	}

@@ -13,6 +13,7 @@ public class PayApproved {
 	
     public PayApproved(Pay pay){
         this.payStatus = PayApproved.class.getSimpleName();
+        this.setFlightId(pay.getFlightId());
         this.setCount(pay.getCount());
         this.setPayId(pay.getPayId());
         this.setPrice(pay.getPrice());
@@ -67,5 +68,13 @@ public class PayApproved {
 //		this.reserveStatus = reserveStatus;
 //	}
 
-    
+	public Long getFlightId() {
+		return flightId;
+	}
+
+	public void setFlightId(Long flightId) {
+		this.flightId = flightId;
+	}
+	
+	    
 }

@@ -5,9 +5,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Processor;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MimeTypeUtils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -28,59 +33,92 @@ public class FlightPolicyHandler {
 //        ReservationCancelled reservationCancelled = null;
         PayApproved payApproved = null;
         PayCancelled payCancelled = null;
+//        FlightAdded flightAdd = null;
         
         try {
         	payApproved = objectMapper.readValue(message, PayApproved.class);
         	System.out.println("type = payApproved");
-        } catch (Exception e) {
-			// TODO: handle exception
-		}
-        try {
+        	
         	payCancelled = objectMapper.readValue(message, PayCancelled.class);
         	System.out.println("type = payCancelled");
+        	
         } catch (Exception e) {
 			// TODO: handle exception
 		}
-        
         try {
-		if (payApproved != null && payApproved.getPayStatus().equals("PayApproved")
-				&& payApproved.getFlightId() != null) {
+		if (payApproved != null && payApproved.getPayStatus().equals("PayApproved")) {
 			System.out.println("payApproved");
-//			System.out.println(payApproved);
 
 			Optional<Flight> flightById = repository.findById(payApproved.getFlightId());
 			Flight f = flightById.get();
-			System.out.println(f.getSeat());
-
-			System.out.println("재고량 - 기존데이터가 없으니 현재는 그냥 저장로직만 수행");
-			// Product product = new Product();
-			// product.setId(orderPlaced.getOrderId());
 
 			f.setSeat(f.getSeat() - payApproved.getCount());
-			System.out.println(f.getSeat());
+//			System.out.println(f.getSeat());
+			FlightSeatRequested flightSeatRequested = new FlightSeatRequested();
+			flightSeatRequested.setFlightId(f.getFlightId());
+			flightSeatRequested.setSeat(f.getSeat());
+			System.out.println(flightSeatRequested.getEventType() +" "+flightSeatRequested.getSeat());
+			
 			repository.save(f);
+			ObjectMapper objectSendMapper = new ObjectMapper();
+			String json = null;
+
+			try {
+				json = objectSendMapper.writeValueAsString(flightSeatRequested);
+			} catch (JsonProcessingException e) {
+				throw new RuntimeException("JSON format exception", e);
+			}
+
+			Processor processor = FlightApplication.applicationContext.getBean(Processor.class);
+			MessageChannel outputChannel = processor.output();
+
+			outputChannel.send(MessageBuilder
+					.withPayload(json)
+					.setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
+					.build());
 			System.out.println("======================");
-		} else if (payCancelled != null && payCancelled.getPayStatus().equals("PayCancelled")
-				&& payCancelled.getFlightId() != null) {
+			
+			System.out.println("======================");
+		} else if (payCancelled != null && payCancelled.getPayStatus().equals("PayCancelled")) {
 			System.out.println("payCancelled");
-			System.out.println(payCancelled);
 
 			Optional<Flight> flightById = repository.findById(payCancelled.getFlightId());
 			Flight f = flightById.get();
-			System.out.println(f.getSeat());
 
-			System.out.println("재고량 + 기존데이터가 없으니 현재는 그냥 저장로직만 수행");
-			// Product product = new Product();
-			// product.setId(orderPlaced.getOrderId());
+//			FlightSeatReturned flightSeatReturned = new FlightSeatReturned();
+//			flightSeatReturned.setEventType(FlightSeatReturned.class.getSimpleName());
+			System.out.println("재고량:"+f.getSeat()+" + "+ payCancelled.getCount()+ " " );
 
 			f.setSeat(f.getSeat() + payCancelled.getCount());
 			System.out.println(f.getSeat());
+
+			FlightSeatReturned flightSeatReturned = new FlightSeatReturned();
+			flightSeatReturned.setFlightId(f.getFlightId());
+			flightSeatReturned.setSeat(f.getSeat());
+			System.out.println(flightSeatReturned.getEventType() +" "+flightSeatReturned.getSeat());
 			repository.save(f);
+			ObjectMapper objectSendMapper = new ObjectMapper();
+			String json = null;
+
+			try {
+				json = objectSendMapper.writeValueAsString(flightSeatReturned);
+			} catch (JsonProcessingException e) {
+				throw new RuntimeException("JSON format exception", e);
+			}
+
+			Processor processor = FlightApplication.applicationContext.getBean(Processor.class);
+			MessageChannel outputChannel = processor.output();
+
+			outputChannel.send(MessageBuilder
+					.withPayload(json)
+					.setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
+					.build());
 			System.out.println("======================");
 			
 		}
         } catch (Exception e) {
 			// TODO: handle exception
+        	
 		}
 	}
 }

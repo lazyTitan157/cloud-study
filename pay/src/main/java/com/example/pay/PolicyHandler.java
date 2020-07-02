@@ -1,8 +1,5 @@
 package com.example.pay;
 
-import java.util.ArrayList;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Processor;
@@ -86,7 +83,8 @@ public class PolicyHandler {
 //                Optional<Pay> payById = payRepository.findById(reservationCancelled.getReservationId());
 //    			Pay p = payById.get();
     			p.setPayStatus(PayCancelled.class.getSimpleName());
-    			p.setCount(0);
+    			p.setCount(reservationCancelled.getCount());
+    			System.out.println(p.getCount());
     			p.setPrice(0);
     			PayCancelled payCancelled = new PayCancelled(p);
     			

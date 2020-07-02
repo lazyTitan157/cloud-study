@@ -37,13 +37,14 @@ public class Flight {
     /*******************************/
     @PostPersist @PostUpdate
     public void onCreated(){
-    	FlightAdd flightAdd = new FlightAdd();
+    	FlightAdded flightAdd = new FlightAdded();
     	flightAdd.setFlightId(this.getFlightId());
     	flightAdd.setFlightName(this.getFlightName());
     	flightAdd.setDestination(this.getDestination());
     	flightAdd.setPrice(this.getPrice());
     	flightAdd.setSeat(this.getSeat());
 //    	flightAdd.setSeat2(this.getSeat2());
+    	flightAdd.setEventType("FlightAdded");
     	
    
         ObjectMapper objectMapper = new ObjectMapper();

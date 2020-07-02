@@ -7,6 +7,9 @@ public class PayApproved {
 
 	Long reservationId;
 	Long flightId;
+	int count;
+	int price;
+//	String reserveStatus;
 	
 	public Long getFlightId() {
 		return flightId;
@@ -16,13 +19,10 @@ public class PayApproved {
 		this.flightId = flightId;
 	}
 
-	int count;
-	int price;
-//	String reserveStatus;
 	
-    public PayApproved(){
-        this.payStatus = PayApproved.class.getSimpleName();
-    }
+//    public PayApproved(){
+//        this.payStatus = PayApproved.class.getSimpleName();
+//    }
 
 	public Long getPayId() {
 		return payId;
