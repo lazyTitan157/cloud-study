@@ -37,14 +37,15 @@ public class Reservation {
 
 		if(reserveStatus != null && reserveStatus.equals("place")) {
 			// 1. 예약됨 이벤트 발송
+			
 			ReservationPlaced reservationPlaced = new ReservationPlaced(this);
-//			reservationPlaced.setReservationId(this.getReservationId());;
-//			reservationPlaced.setCount(this.getCount());
-//			reservationPlaced.setreserveStatus(ReservationPlaced.class.getSimpleName()); //by Constructor
-//			reservationPlaced.setFlightId(this.getFlightId());
-//
-//			reservationPlaced.setPrice(this.getPrice());
-//			reservationPlaced.setPhone(this.getPhone());
+			//			reservationPlaced.setReservationId(this.getReservationId());;
+			//			reservationPlaced.setCount(this.getCount());
+			//			reservationPlaced.setreserveStatus(ReservationPlaced.class.getSimpleName()); //by Constructor
+			//			reservationPlaced.setFlightId(this.getFlightId());
+			//
+			//			reservationPlaced.setPrice(this.getPrice());
+			//			reservationPlaced.setPhone(this.getPhone());
 
 			ObjectMapper objectMapper = new ObjectMapper();
 			String json = null;
@@ -91,14 +92,15 @@ public class Reservation {
 
 			Optional<Reservation> reserveById = reservationRepository.findById(this.getReservationId());
 			Reservation r = reserveById.get();
+//			System.out.println(r.getCount());
 			ReservationCancelled reservationCancelled = new ReservationCancelled(r);
 			//			reservationCancelled.setReservationId(this.getReservationId());
 			//			reservationCancelled.setReserveStatus(reservationCancelled.getReserveStatus());
 			reservationCancelled.setFlightId(r.getFlightId());
 			reservationCancelled.setPhone(r.getPhone());
 			//			r.setCount(0);
-			//			reservationCancelled.setCount(0);
-			//			reservationCancelled.setPrice(0);
+			reservationCancelled.setCount(this.getCount());
+			//						reservationCancelled.setPrice(r.getPrice());
 			//			reservationCancelled.setReserveStatus(ReservationCancelled.class.getSimpleName());
 
 			//			Product product = new Product();

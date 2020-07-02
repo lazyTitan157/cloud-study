@@ -14,9 +14,10 @@ public class ReservationCancelled {
     	this.reservationId = reservation.getReservationId();
     	this.flightId = reservation.getFlightId();
     	this.setPhone(reservation.getPhone());
-    	this.count = 0;
-    	this.price = 0;
+    	this.setCount(reservation.getCount());
+    	this.setPrice(reservation.getPrice());
     	this.reserveStatus = ReservationCancelled.class.getSimpleName();
+    	System.out.println(this.getCount());
     }
 
     public Long getReservationId() {
