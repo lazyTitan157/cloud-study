@@ -122,6 +122,26 @@ Flight 서비스만 DB를 MySQL로 구분하여 적용함. 나머지 서비스�
 			<scope>runtime</scope>
 		</dependency>-->
 ```
+application.yml
+```
+ ##mysql connection test
+  datasource: 
+    driverClassName: com.mysql.cj.jdbc.Driver
+    password: "${_DATASOURCE_PASSWORD:dddddddd}"
+    url: "jdbc:mysql://${_DATASOURCE_ADDRESS:team4-mysql.chakwspaezvo.ap-northeast-1.rds.amazonaws.com:3306}/${_DATASOURCE_TABLESPACE:team4?characterEncoding=UTF-8&serverTimezone=UTC}"
+    username: "${_DATASOURCE_USERNAME:admin}"
+  jpa: 
+    hibernate: 
+      ddl-auto: update
+      naming: 
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties: 
+      hibernate: 
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        show_sql: true 
+```
+
 
 ## 동기식 호출 과 Fallback 처리
 예약 > 결제 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리
