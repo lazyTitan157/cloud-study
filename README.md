@@ -81,10 +81,10 @@ kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic f7 --from-begin
 
 | 기능 | 이벤트 Payload |
 |---|:---:|
-| 관리자가 항공을 등록한다. | ![항공기 등록](https://user-images.githubusercontent.com/63759253/86438699-0f46a280-bd42-11ea-8404-da13ccbd3467.jpg) |
-| 사용자가 항공기를 예약한다.</br>예약 시, 결제가 요청되며 좌석이 줄어든다. | ![예약](https://user-images.githubusercontent.com/63759253/86438860-4d43c680-bd42-11ea-884b-e7d2e91cc684.jpg) |
+| 관리자가 항공을 등록한다. | ![항공기 등록](https://user-images.githubusercontent.com/63759253/86438699-0f46a280-bd42-11ea-8404-da13ccbd3467.jpg) (key) eventType: FlightAdded Request to Pay |
+| 사용자가 항공기를 예약한다.</br>예약 시, 결제가 요청되며 좌석이 줄어든다. | ![예약](https://user-images.githubusercontent.com/63759253/86438860-4d43c680-bd42-11ea-884b-e7d2e91cc684.jpg) (key) [예약서비스]reserveStatus: ReservationPlaced > [결제서비스]payStatus: PayApproved > [서비스]eventType: FlightRequested |
 | 사용자가 항공기를 조회한다. | ![항공편 현황판1](https://user-images.githubusercontent.com/63759253/86438755-27b6bd00-bd42-11ea-9052-e6c4e1b57aaa.jpg) |
-| 사용자가 항공기를 예약을 취소한다.</br>취소 시, 결제가 취소되며 좌석이 증가한다. | ![예약 cancel](https://user-images.githubusercontent.com/63759253/86439023-af043080-bd42-11ea-9660-ab3bf9d4cbd5.jpg) |
+| 사용자가 항공기를 예약을 취소한다.</br>취소 시, 결제가 취소되며 좌석이 증가한다. | ![예약 cancel](https://user-images.githubusercontent.com/63759253/86439023-af043080-bd42-11ea-9660-ab3bf9d4cbd5.jpg) (key) reserveStatus: ReservationCancelled, payStatus: PayCancelled, eventType:FlightSeatReturned |
 | 사용자가 항공기를 조회한다. | ![항공편 현황판2](https://user-images.githubusercontent.com/63759253/86439067-c3e0c400-bd42-11ea-8eef-30ed2b3b2443.jpg) |
 
 ## Gateway 적용
@@ -150,9 +150,6 @@ application.yml
 
 ## 동기식 호출 과 Fallback 처리
 예약 > 결제 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리
-- FeignClient 서비스 구현
-```
-```
 - 동기식 호출 (Reservation.java)
 ```
     @PostPersist
@@ -172,9 +169,6 @@ application.yml
 			pay.setReserveStatus(reservationPlaced.getreserveStatus());
 
 			restTemplate.postForEntity(payUrl, pay ,String.class);
-```
-- Fallback 서비스 구현
-```
 ```
 
 ## 비동기식 호출 과 Fallback 처리
