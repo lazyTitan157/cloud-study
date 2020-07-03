@@ -1,4 +1,4 @@
-package com.example.cqrs;
+package com.example.reservation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -21,10 +21,11 @@ public class FlightStatusViewHandler {
         		FlightStatus flightStatus = new FlightStatus();
             	flightStatus.setSeat(flightAdded.getSeat());
             	if (flightStatus.getSeat() == 0) {
-            		System.out.println("123");
+            		;
             	}
             	else {
             	flightStatus.setFlightName(flightAdded.getFlightName());
+            	flightStatus.setPrice(flightAdded.getPrice());
             	flightStatus.setStatus("new flight");
                 flightStatusRepository.save(flightStatus);
             	}
@@ -69,7 +70,7 @@ public class FlightStatusViewHandler {
             e.printStackTrace();
         }
     }
-    
+
     @StreamListener(Processor.INPUT)
     public void whenseatPayed_then_UPDATE_1 (@Payload PayApproved payApproved) {
         try {
@@ -85,5 +86,6 @@ public class FlightStatusViewHandler {
             e.printStackTrace();
         }
     }
+    
     
 }
