@@ -55,6 +55,14 @@
 ![team4_kafka](https://user-images.githubusercontent.com/63759253/86447123-d57c9880-bd4f-11ea-89e9-56807b34f8a9.jpg)
 
 
+
+## 완성본에 대한 기능적/비기능적 요구사항을 커버하는지 검증
+
+![flightsystem3](https://user-images.githubusercontent.com/63759253/86463639-de2d9880-bd68-11ea-952d-4161dbbf8017.jpg)
+
+- 모델은 모든 요구사항을 커버함
+
+
 # 사용 방법
 ```zookeeper-server-start.bat ../../config/zookeeper.properties
 kafka-server-start.bat ../../config/server.properties
