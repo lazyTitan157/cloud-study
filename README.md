@@ -105,6 +105,133 @@ kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic f7 --from-begin
           predicates:
             - Path=/cqrs/** ```
 
+## 폴리글랏 퍼시스턴스
+Flight 서비스만 DB를 MySQL로 구분하여 적용함. 나머지 서비스는 인메모리 DB인 hsqldb 사용.
+```
+<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.19</version>
+		</dependency>
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-web</artifactId> 
+			</dependency> 
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>-->
+```
+
+## 동기식 호출 과 Fallback 처리
+예약 > 결제 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리
+- FeignClient 서비스 구현
+```
+# PaymentService.java
+
+@FeignClient(name="payment", url="${feign.payment.url}", fallback = PaymentServiceFallback.class)
+public interface PaymentService {
+    @PostMapping(path="/payments")
+    public void requestPayment(Payment payment);
+}
+```
+- 동기식 호출 (Reservation.java)
+```
+    @PostPersist
+	public void onCheck(){
+
+		if(reserveStatus != null && reserveStatus.equals("place")) {
+			// 1. 예약됨 이벤트 발송
+            ...
+            // 2. 결재 정보 post
+			RestTemplate restTemplate = ReservationApplication.applicationContext.getBean(RestTemplate.class);
+			String payUrl = "http://localhost:8083/pays";
+			Pay pay = new Pay();
+			pay.setReservationId(reservationPlaced.getReservationId());
+			pay.setCount(reservationPlaced.getCount());
+			pay.setPrice(reservationPlaced.getPrice());
+			pay.setFlightId(reservationPlaced.getFlightId());
+			pay.setReserveStatus(reservationPlaced.getreserveStatus());
+
+			restTemplate.postForEntity(payUrl, pay ,String.class);
+```
+- Fallback 서비스 구현
+```
+```
+
+## 비동기식 호출 과 Fallback 처리
+- 비동기식 발신 구현 (Pay.java)
+```
+    @PostPersist
+    public void onCreated(){
+        PayApproved payApproved = new PayApproved(this);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = null;
+
+        try {
+            json = objectMapper.writeValueAsString(payApproved);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("JSON format exception", e);
+        }
+
+        Processor processor = PayApplication.applicationContext.getBean(Processor.class);
+        MessageChannel outputChannel = processor.output();
+
+        outputChannel.send(MessageBuilder
+                .withPayload(json)
+                .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
+                .build());
+		}
+    }
+```
+- 비동기식 수신 구현 (pay > PolicyHandler.java)
+```
+    @StreamListener(Processor.INPUT)
+    public void onEventListen(@Payload String message){
+    	System.out.println("##### listener : " + message);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        ...
+        if( reservationCancelled.getReserveStatus().equals(ReservationCancelled.class.getSimpleName())){
+            	System.out.println(reservationCancelled.getPayId());
+            	
+                payRepository = PayApplication.applicationContext.getBean(PayRepository.class);
+                Iterable<Pay> pays = payRepository.findAll();
+                Pay p = null;
+                for (Pay pay : pays) {
+					if(pay.getReservationId().equals(reservationCancelled.getReservationId())) {
+						p = pay;
+						break;
+					}
+				}
+    			p.setPayStatus(PayCancelled.class.getSimpleName());
+    			p.setCount(reservationCancelled.getCount());
+    			System.out.println(p.getCount());
+    			p.setPrice(0);
+    			payRepository.save(p);
+    			PayCancelled payCancelled = new PayCancelled(p);
+    			
+    			ObjectMapper objectSendMapper = new ObjectMapper();
+    			String json = null;
+
+    			try {
+    				json = objectSendMapper.writeValueAsString(payCancelled);
+    			} catch (JsonProcessingException e) {
+    				throw new RuntimeException("JSON format exception", e);
+    			}
+
+    			Processor processor = PayApplication.applicationContext.getBean(Processor.class);
+    			MessageChannel outputChannel = processor.output();
+
+    			outputChannel.send(MessageBuilder
+    					.withPayload(json)
+    					.setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
+    					.build());
+            }
+            ...
+        
+```
+
 ## S3 & CloudFront 적용
 | 적용과정 | 캡쳐화면 |
 |---|:---:|
