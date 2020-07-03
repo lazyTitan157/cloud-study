@@ -50,6 +50,11 @@
 - General : Payment
 ```
 
+## 헥사고날 아키텍처 다이어그램 도출
+    
+![team4_kafka](https://user-images.githubusercontent.com/63759253/86447123-d57c9880-bd4f-11ea-89e9-56807b34f8a9.jpg)
+
+
 # 사용 방법
 ```zookeeper-server-start.bat ../../config/zookeeper.properties
 kafka-server-start.bat ../../config/server.properties
