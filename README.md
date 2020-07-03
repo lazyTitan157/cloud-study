@@ -81,3 +81,12 @@ kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic f7 --from-begin
 | 사용자가 항공기를 조회한다. | ![항공편 현황판1](https://user-images.githubusercontent.com/63759253/86438755-27b6bd00-bd42-11ea-9052-e6c4e1b57aaa.jpg) |
 | 사용자가 항공기를 예약을 취소한다.</br>취소 시, 결제가 취소되며 좌석이 증가한다. | ![예약 cancel](https://user-images.githubusercontent.com/63759253/86439023-af043080-bd42-11ea-9660-ab3bf9d4cbd5.jpg) |
 | 사용자가 항공기를 조회한다. | ![항공편 현황판2](https://user-images.githubusercontent.com/63759253/86439067-c3e0c400-bd42-11ea-8eef-30ed2b3b2443.jpg) |
+
+## S3 & CloudFront 적용
+- Terraform으로 S3생성
+![image](https://user-images.githubusercontent.com/8167433/86443475-48831080-bd4a-11ea-9ad6-ab932e443b6a.png)
+- S3와 CloudFront 연결
+![image](https://user-images.githubusercontent.com/8167433/86443777-b596a600-bd4a-11ea-9322-5a878df4cf0a.png)
+- 서비스 UI에서 CloudFront이미지 사용
+![image](https://user-images.githubusercontent.com/8167433/86443882-db23af80-bd4a-11ea-83c4-e73f5c0a671a.png)
+![image](https://user-images.githubusercontent.com/8167433/86444002-0d351180-bd4b-11ea-8eed-61a067c330a5.png)
