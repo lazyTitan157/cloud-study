@@ -70,4 +70,20 @@ public class FlightStatusViewHandler {
         }
     }
     
+    @StreamListener(Processor.INPUT)
+    public void whenseatPayed_then_UPDATE_1 (@Payload PayApproved payApproved) {
+        try {
+            if ( payApproved.getPayStatus() != null && payApproved.getPayStatus().equals(PayApproved.class.getSimpleName())) {
+            	Optional<FlightStatus> flightStatusOptional  = flightStatusRepository.findById(payApproved.getFlightId());
+            	if (flightStatusOptional.isPresent()) {
+            		FlightStatus flightStatus = flightStatusOptional.get();
+                	flightStatus.setStatus("Recently Booked!");
+                	flightStatusRepository.save(flightStatus);
+            	}        	
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    
 }
