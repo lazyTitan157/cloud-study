@@ -54,6 +54,8 @@
 ```zookeeper-server-start.bat ../../config/zookeeper.properties
 kafka-server-start.bat ../../config/server.properties
 kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic f7 --from-beginning'''
+```
+
 
 - 항공편 등록
 (항공사CMD) http http://localhost:8082/flights flightName=CH777 destination=korea price=300000 seat=100
