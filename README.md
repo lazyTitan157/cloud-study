@@ -72,7 +72,7 @@ kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic f7 --from-begin
 - 항공편 조회
 (사용자CMD) http http://localhost:8081/flightStatuses
 
-##시나리오 테스트결과
+## 시나리오 테스트결과
 
 | 기능 | 이벤트 Payload |
 |---|:---:|
@@ -81,6 +81,29 @@ kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic f7 --from-begin
 | 사용자가 항공기를 조회한다. | ![항공편 현황판1](https://user-images.githubusercontent.com/63759253/86438755-27b6bd00-bd42-11ea-9052-e6c4e1b57aaa.jpg) |
 | 사용자가 항공기를 예약을 취소한다.</br>취소 시, 결제가 취소되며 좌석이 증가한다. | ![예약 cancel](https://user-images.githubusercontent.com/63759253/86439023-af043080-bd42-11ea-9660-ab3bf9d4cbd5.jpg) |
 | 사용자가 항공기를 조회한다. | ![항공편 현황판2](https://user-images.githubusercontent.com/63759253/86439067-c3e0c400-bd42-11ea-8eef-30ed2b3b2443.jpg) |
+
+## Gateway 적용
+'''spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: reservation
+          uri: http://reservation:8080
+          predicates:
+            - Path=/reservations/**
+        - id: flight
+          uri: http://flight:8080
+          predicates:
+            - Path=/flights/**
+        - id: pay
+          uri: http://pay:8080
+          predicates:
+            - Path=/pays/** 
+        - id: cqrs
+          uri: http://cqrs:8080
+          predicates:
+            - Path=/cqrs/** '''
 
 ## S3 & CloudFront 적용
 | 적용과정 | 캡쳐화면 |
