@@ -127,13 +127,6 @@ Flight 서비스만 DB를 MySQL로 구분하여 적용함. 나머지 서비스�
 예약 > 결제 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리
 - FeignClient 서비스 구현
 ```
-# PaymentService.java
-
-@FeignClient(name="payment", url="${feign.payment.url}", fallback = PaymentServiceFallback.class)
-public interface PaymentService {
-    @PostMapping(path="/payments")
-    public void requestPayment(Payment payment);
-}
 ```
 - 동기식 호출 (Reservation.java)
 ```
@@ -234,7 +227,7 @@ public interface PaymentService {
 ```
 
 ## CQRS 구현
-Flight 서비스와 Pay 서비스 정보를 한번에 가져오는 CQRS서비스 작성 (CQRS프로젝트)
+Flight 서비스와 Pay 서비스 정보를 한번에 가져오는 CQRS서비스 작성 (FlightStatusViewHandler.java)
 - Flight 서비스의 FlightSeatReturned 이벤트에 대한 리스너
 ```
     @StreamListener(Processor.INPUT)
