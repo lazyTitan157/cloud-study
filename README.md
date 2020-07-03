@@ -56,25 +56,26 @@ kafka-server-start.bat ../../config/server.properties
 kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic f7 --from-beginning'''
 
 - 항공편 등록
-(항공사CMD) http http://localhost:8082/flights flightName=CH777 destination=korea price=300000 seat=40
-- 항공편 조회
-(사용자CMD) http http://localhost:8081/flightStatuses
+(항공사CMD) http http://localhost:8082/flights flightName=CH777 destination=korea price=300000 seat=100
 - 예약
-(사용자CMD) http POST localhost:8081/reservations flightId=1 reserveStatus="place" count=1 price=300000 phone="01097770770"
+(사용자CMD) http POST localhost:8081/reservations flightId=1 reserveStatus="place" count=1 price=300000 phone="01097770779"
 (REQ/RES) reservationPlaced > payapproved
 (REQ/RES) payApproved > flightSeatRequested
+- 항공편 조회
+(사용자CMD) http http://localhost:8081/flightStatuses
 - 예약취소
-(사용자CMD)  http POST localhost:8080/reservations reservationId=1 count=1 reserveStatus="cancel"
+(사용자CMD) http POST localhost:8081/reservations reservationId=2 count=1 reserveStatus="cancel"
 (REQ/RES) reservationCancelled > payCancelled
 (REQ/RES) payCancelled > flighSeatReturned
+- 항공편 조회
+(사용자CMD) http http://localhost:8081/flightStatuses
 
 ##시나리오 테스트결과
 
 | 기능 | 이벤트 Payload |
 |---|:---:|
-| 관리자가 항공을 등록한다. | ![image](https://user-images.githubusercontent.com/62231786/85086806-aa099200-b216-11ea-8ca4-50eb47c3b02b.JPG) |
-| 사용자가 항공기를 조회한다. | ![image](https://user-images.githubusercontent.com/62231786/85086808-aa099200-b216-11ea-895e-3a7dcfeb4b71.JPG) |
-| 사용자가 콘서트를 예약한다.</br>예약 시, 결제가 요청된다. | ![image](https://user-images.githubusercontent.com/62231786/85086809-aaa22880-b216-11ea-9d5c-fcf88fbd2a27.JPG) |
-| 사용자가 예약한 콘서트를 결제한다.</br>결제가 완료되면 콘서트예약이 승인된다.</br>콘서트예약이 승인되면 티켓 수가 변경된다. (감소)| ![image](https://user-images.githubusercontent.com/62231786/85086811-aaa22880-b216-11ea-96aa-5ec29cd8a5d6.JPG) | 
-| 사용자가 예약 취소를 하면 결제가 취소된다.</br>결제가 취소되면 티켓 수가 변경된다. (증가) | ![image](https://user-images.githubusercontent.com/62231786/85086805-a8d86500-b216-11ea-900a-be7c1555e61d.JPG) |
-| 사용자가 콘서트 예약내역 상태를 조회한다. | [{"id":1,"bookingId":6659,"concertId":1,"userId":1,"status":"BookingRequested"},</br> {"id":2,"bookingId":6660,"concertId":3,"userId":1,"status":"PaymentCanceled"}] |
+| 관리자가 항공을 등록한다. | ![항공기 등록](https://user-images.githubusercontent.com/63759253/86438699-0f46a280-bd42-11ea-8404-da13ccbd3467.jpg) |
+| 사용자가 항공기를 예약한다.</br>예약 시, 결제가 요청되며 좌석이 줄어든다. | ![예약](https://user-images.githubusercontent.com/63759253/86438860-4d43c680-bd42-11ea-884b-e7d2e91cc684.jpg) |
+| 사용자가 항공기를 조회한다. | ![항공편 현황판1](https://user-images.githubusercontent.com/63759253/86438755-27b6bd00-bd42-11ea-9052-e6c4e1b57aaa.jpg) |
+| 사용자가 항공기를 예약을 취소한다.</br>취소 시, 결제가 취소되며 좌석이 증가한다. | ![예약 cancel](https://user-images.githubusercontent.com/63759253/86439023-af043080-bd42-11ea-9660-ab3bf9d4cbd5.jpg) |
+| 사용자가 항공기를 조회한다. | ![항공편 현황판2](https://user-images.githubusercontent.com/63759253/86439067-c3e0c400-bd42-11ea-8eef-30ed2b3b2443.jpg) |
