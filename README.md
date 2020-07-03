@@ -85,9 +85,7 @@ kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic f7 --from-begin
 ## S3 & CloudFront 적용
 | 적용과정 | 캡쳐화면 |
 |---|:---:|
-| Terraform으로 S3생성 | ![image](https://user-images.githubusercontent.com/8167433/86443475-48831080-bd4a-11ea-9ad6-ab932e443b6a.png)
-|
-| S3와 CloudFront 연결 | ![image](https://user-images.githubusercontent.com/8167433/86443777-b596a600-bd4a-11ea-9322-5a878df4cf0a.png) |
-| 서비스 UI에서 CloudFront이미지 사용 | ![image](https://user-images.githubusercontent.com/8167433/86443882-db23af80-bd4a-11ea-83c4-e73f5c0a671a.png)
-![image](https://user-images.githubusercontent.com/8167433/86444002-0d351180-bd4b-11ea-8eed-61a067c330a5.png) |
+| Terraform으로 S3생성 | ![image](https://user-images.githubusercontent.com/8167433/86443475-48831080-bd4a-11ea-9ad6-ab932e443b6a.png)|
+| S3와 CloudFront 연결 | ![image](https://user-images.githubusercontent.com/8167433/86443777-b596a600-bd4a-11ea-9322-5a878df4cf0a.png)|
+| 서비스 UI에서 CloudFront이미지 사용 | ![image](https://user-images.githubusercontent.com/8167433/86443882-db23af80-bd4a-11ea-83c4-e73f5c0a671a.png) ![image](https://user-images.githubusercontent.com/8167433/86444002-0d351180-bd4b-11ea-8eed-61a067c330a5.png) |
 
