@@ -82,7 +82,7 @@ kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic f7 --from-begin
 | 기능 | 이벤트 Payload |
 |---|:---:|
 | 관리자가 항공을 등록한다.<(항공사CMD) http http://localhost:8082/flights flightName=CH777 destination=korea price=300000 seat=100> | ![항공기 등록](https://user-images.githubusercontent.com/63759253/86438699-0f46a280-bd42-11ea-8404-da13ccbd3467.jpg) |
-| 사용자가 항공기를 예약한다<(사용자CMD) http POST localhost:8081/reservations flightId=1 reserveStatus="place" count=1 price=300000 phone="01097770779"> <(REQ/RES) reservationPlaced > payapproved
+| 사용자가 항공기를 예약한다<(사용자CMD) http POST localhost:8081/reservations flightId=1 reserveStatus="place" count=1 price=300000 phone="01097770779" ,(REQ/RES) reservationPlaced --> payapproved>
 (REQ/RES) payApproved > flightSeatRequested>.</br>예약 시, 결제가 요청되며 좌석이 줄어든다. | ![예약](https://user-images.githubusercontent.com/63759253/86438860-4d43c680-bd42-11ea-884b-e7d2e91cc684.jpg) |
 | 사용자가 항공기를 조회한다. <(사용자CMD) http http://localhost:8081/flightStatuses> | ![항공편 현황판1](https://user-images.githubusercontent.com/63759253/86438755-27b6bd00-bd42-11ea-9052-e6c4e1b57aaa.jpg) |
 | 사용자가 항공기를 예약을 취소한다.</br>취소 시, 결제가 취소되며 좌석이 증가한다. <(사용자CMD) http POST localhost:8081/reservations reservationId=2 count=1 reserveStatus="cancel"
