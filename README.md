@@ -22,7 +22,7 @@
 1. 고객이 항공권을 예약하고 결재한다.
 1. 항공사로 구매내역이 전달된다.
 1. 항공사는 구매내역을 확인하여 해당 항공편의 좌석을 감소한다.
-1. 좌석 감소는 항공편 리스트에 반영되어 해당 항공의 남은 좌석수를 보여준다. 
+1. 좌석 감소는 항공편 리스트에 반영되어 해당 항공의 남은 좌석수를 보여준다.
 1. 고객이 항공권을 취소할 수 있다.
 1. 고객이 항공권 취소를 요청하면, 자동으로 결재가 취소되며 항공사에 관련 내용을 전달한다.
 1. 항공권 취소로 인한 좌석증가는 항공편 리스트에 반영되어 해당 항공의 남은 좌석수를 보여준다.
@@ -35,8 +35,8 @@
     1. 항공사 관리 기능이 수행되지 않더라도 주문은 365일 24시간 받을 수 있어야 한다  Async (event-driven), Eventual Consistency
 1. 성능
     1. 사용자는 항공권 리스트을 확인할 수 있다. > CQRS
-    
-    
+
+
 # 분석/설계
 
 ## Event Storming 결과
@@ -99,11 +99,12 @@ kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic f7 --from-begin
         - id: pay
           uri: http://pay:8080
           predicates:
-            - Path=/pays/** 
+            - Path=/pays/**
         - id: cqrs
           uri: http://cqrs:8080
           predicates:
-            - Path=/cqrs/** ```
+            - Path=/cqrs/**
+```
 
 ## 폴리글랏 퍼시스턴스
 Flight 서비스만 DB를 MySQL로 구분하여 적용함. 나머지 서비스는 인메모리 DB인 hsqldb 사용.
@@ -113,8 +114,8 @@ Flight 서비스만 DB를 MySQL로 구분하여 적용함. 나머지 서비스�
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.19</version>
 		</dependency>
-		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-web</artifactId> 
-			</dependency> 
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-web</artifactId>
+			</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -194,7 +195,7 @@ public interface PaymentService {
         ...
         if( reservationCancelled.getReserveStatus().equals(ReservationCancelled.class.getSimpleName())){
             	System.out.println(reservationCancelled.getPayId());
-            	
+
                 payRepository = PayApplication.applicationContext.getBean(PayRepository.class);
                 Iterable<Pay> pays = payRepository.findAll();
                 Pay p = null;
@@ -210,7 +211,7 @@ public interface PaymentService {
     			p.setPrice(0);
     			payRepository.save(p);
     			PayCancelled payCancelled = new PayCancelled(p);
-    			
+
     			ObjectMapper objectSendMapper = new ObjectMapper();
     			String json = null;
 
@@ -229,12 +230,12 @@ public interface PaymentService {
     					.build());
             }
             ...
-        
+
 ```
 
 ## CQRS 구현
 Flight 서비스와 Pay 서비스 정보를 한번에 가져오는 CQRS서비스 작성 (CQRS프로젝트)
-- Flight 서비스의 FlightSeatReturned 이벤트에 대한 리스너 
+- Flight 서비스의 FlightSeatReturned 이벤트에 대한 리스너
 ```
     @StreamListener(Processor.INPUT)
     public void whenseatReturned_then_UPDATE_2 (@Payload FlightSeatReturned flightSeatReturned) {
@@ -247,14 +248,14 @@ Flight 서비스와 Pay 서비스 정보를 한번에 가져오는 CQRS서비스
                    flightStatus.setFlightName(flightSeatReturned.getFlightName());
                    flightStatus.setStatus("seat returned");
                    flightStatusRepository.save(flightStatus);
-               }           
+               }
             }
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 ```
-- Pay 서비스의 PayApproved 이벤트에 대한 리스너 
+- Pay 서비스의 PayApproved 이벤트에 대한 리스너
 ```
     @StreamListener(Processor.INPUT)
     public void whenseatPayed_then_UPDATE_1 (@Payload PayApproved payApproved) {
@@ -265,7 +266,7 @@ Flight 서비스와 Pay 서비스 정보를 한번에 가져오는 CQRS서비스
                   FlightStatus flightStatus = flightStatusOptional.get();
                    flightStatus.setStatus("Recently Booked!");
                    flightStatusRepository.save(flightStatus);
-               }           
+               }
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -273,10 +274,30 @@ Flight 서비스와 Pay 서비스 정보를 한번에 가져오는 CQRS서비스
     }
 ```
 
+# 운영
+## CI/CD 설정
+- CodeBuild 기반으로 파이프라인 구성
+![pipeline](https://user-images.githubusercontent.com/63759273/86444155-4e2d2600-bd4b-11ea-97d6-95b1a977f7e0.PNG)
+
+- Git Hook 연결
+![git hook](https://user-images.githubusercontent.com/63759273/86444561-de6b6b00-bd4b-11ea-8c4e-8e700b7201dc.PNG)
+
+## 서킷 브레이 / 장애격리
+
+## 오토스케일 아웃
+- 현재 상태 확인
+- 오토스케일 설정
+- 부하 수행
+- 모니터링
+- 스케일 아웃 확인
+
+
+## 무정지 재배포
+![무정지재배포](https://user-images.githubusercontent.com/63759273/86442676-20df7880-bd49-11ea-9fe3-c84393b14390.PNG)
+
 ## S3 & CloudFront 적용
 | 적용과정 | 캡쳐화면 |
 |---|:---:|
 | Terraform으로 S3생성 | ![image](https://user-images.githubusercontent.com/8167433/86443475-48831080-bd4a-11ea-9ad6-ab932e443b6a.png)|
 | S3와 CloudFront 연결 | ![image](https://user-images.githubusercontent.com/8167433/86443777-b596a600-bd4a-11ea-9322-5a878df4cf0a.png)|
 | 서비스 UI에서 CloudFront이미지 사용 | ![image](https://user-images.githubusercontent.com/8167433/86443882-db23af80-bd4a-11ea-83c4-e73f5c0a671a.png) ![image](https://user-images.githubusercontent.com/8167433/86444002-0d351180-bd4b-11ea-8eed-61a067c330a5.png) |
-
