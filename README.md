@@ -232,6 +232,47 @@ public interface PaymentService {
         
 ```
 
+## CQRS 구현
+Flight 서비스와 Pay 서비스 정보를 한번에 가져오는 CQRS서비스 작성 (CQRS프로젝트)
+- Flight 서비스의 FlightSeatReturned 이벤트에 대한 리스너 
+```
+    @StreamListener(Processor.INPUT)
+    public void whenseatReturned_then_UPDATE_2 (@Payload FlightSeatReturned flightSeatReturned) {
+        try {
+            if ( flightSeatReturned.getEventType().equals(FlightSeatReturned.class.getSimpleName())) {
+               Optional<FlightStatus> flightStatusOptional  = flightStatusRepository.findById(flightSeatReturned.getFlightId());
+               if (flightStatusOptional.isPresent()) {
+                  FlightStatus flightStatus = flightStatusOptional.get();
+                  flightStatus.setSeat(flightSeatReturned.getSeat());
+                   flightStatus.setFlightName(flightSeatReturned.getFlightName());
+                   flightStatus.setStatus("seat returned");
+                   flightStatusRepository.save(flightStatus);
+               }           
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+```
+- Pay 서비스의 PayApproved 이벤트에 대한 리스너 
+```
+    @StreamListener(Processor.INPUT)
+    public void whenseatPayed_then_UPDATE_1 (@Payload PayApproved payApproved) {
+        try {
+            if ( payApproved.getPayStatus() != null && payApproved.getPayStatus().equals(PayApproved.class.getSimpleName())) {
+               Optional<FlightStatus> flightStatusOptional  = flightStatusRepository.findById(payApproved.getFlightId());
+               if (flightStatusOptional.isPresent()) {
+                  FlightStatus flightStatus = flightStatusOptional.get();
+                   flightStatus.setStatus("Recently Booked!");
+                   flightStatusRepository.save(flightStatus);
+               }           
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+```
+
 ## S3 & CloudFront 적용
 | 적용과정 | 캡쳐화면 |
 |---|:---:|
