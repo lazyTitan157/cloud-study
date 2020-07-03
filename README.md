@@ -83,7 +83,7 @@ kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic f7 --from-begin
 | 사용자가 항공기를 조회한다. | ![항공편 현황판2](https://user-images.githubusercontent.com/63759253/86439067-c3e0c400-bd42-11ea-8eef-30ed2b3b2443.jpg) |
 
 ## Gateway 적용
-'''spring:
+```spring:
   profiles: docker
   cloud:
     gateway:
@@ -103,7 +103,7 @@ kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic f7 --from-begin
         - id: cqrs
           uri: http://cqrs:8080
           predicates:
-            - Path=/cqrs/** '''
+            - Path=/cqrs/** ```
 
 ## S3 & CloudFront 적용
 | 적용과정 | 캡쳐화면 |
