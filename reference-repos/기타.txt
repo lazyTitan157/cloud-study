@@ -1,0 +1,9 @@
+kt-cloud-team4-final 프로젝트에 참고한 repository
+https://github.com/event-storming/gateway
+https://github.com/event-storming/ui
+https://github.com/event-storming/products
+https://github.com/event-storming/orders
+https://github.com/event-storming/delivery
+https://github.com/event-storming/mypage
+https://github.com/event-storming/oauth
+[교안] https://github.com/event-storming/docs (forked https://github.com/lazyTitan157/docs)
