@@ -1,0 +1,66 @@
+server:
+  port: 8082
+
+spring:
+  profiles: default
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+      bindings:
+        input:
+          group: flight
+          destination: f7
+          contentType: application/json
+        output:
+          destination: f7
+          contentType: application/json
+  datasource: 
+    driverClassName: com.mysql.cj.jdbc.Driver
+    password: "${_DATASOURCE_PASSWORD:gksthf4350!}"
+    url: "jdbc:mysql://${_DATASOURCE_ADDRESS:127.0.0.1:3306}/${_DATASOURCE_TABLESPACE:mysql?characterEncoding=UTF-8&serverTimezone=UTC}"
+    username: "${_DATASOURCE_USERNAME:root}"
+  jpa: 
+    hibernate: 
+      ddl-auto: update
+      naming: 
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties: 
+      hibernate: 
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        show_sql: true
+        
+---
+spring:
+  profiles: docker
+#  sleuth:
+#    sampler:
+#      probability: 1
+#    web:
+#      skipPattern: (^cleanup.*|.+favicon.*)
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: my-kafka.kafka.svc.cluster.local:9092
+        streams:
+          binder:
+            configuration:
+              default:
+                key:
+                  serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+                value:
+                  serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+      bindings:
+        event-in:
+          group: flight
+          destination: f7
+          contentType: application/json
+        event-out:
+          destination: f7
+          contentType: application/json
+api:
+  url:
+    product: http://flights:8080
