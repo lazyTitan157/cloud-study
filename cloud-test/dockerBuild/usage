@@ -1,0 +1,5 @@
+# my docker usage
+docker run -it --name n1 -p 8888:80 1azytitan/docker-practice
+$tree
+
+$ifconfig
